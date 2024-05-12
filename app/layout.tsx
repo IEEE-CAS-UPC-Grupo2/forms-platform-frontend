@@ -6,6 +6,10 @@ import { Navbar } from "./components/Navbar";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
 export const metadata: Metadata = {
   title: "Eventos - IEEE CAS UPC",
   description: "Inscribete a eventos de CAS UPC",
