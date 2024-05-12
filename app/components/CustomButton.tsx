@@ -10,7 +10,7 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   onClick,
 }) => {
   let buttonClasses =
-    "py-3 px-4 min-w-40 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90";
+    "py-2 px-4 min-w-40 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90";
 
   switch (color) {
     case "black":
