@@ -1,29 +1,32 @@
 interface CustomButtonProps {
   color?: "green" | "black" | "red";
-  text: string;
+  children: React.ReactNode;
+  onClick?: () => void;
 }
 
 export const CustomButton: React.FC<CustomButtonProps> = ({
   color = "green",
-  text,
+  children,
+  onClick,
 }) => {
-  let buttonClasses = "font-semibold py-2 px-4 rounded";
+  let buttonClasses =
+    "py-3 px-4 min-w-52 rounded-lg text-cas-white hover:shadow-md hover:opacity-90";
 
   switch (color) {
     case "black":
-      buttonClasses += " bg-black text-white";
+      buttonClasses += " bg-cas-black";
       break;
     case "red":
-      buttonClasses += " bg-red-500 hover:bg-red-700 text-white";
+      buttonClasses += " bg-cas-red";
       break;
     default: // green
-      buttonClasses += " bg-cas-green hover:bg-green-700 text-white";
+      buttonClasses += " bg-cas-green";
       break;
   }
 
   return (
-    <button className="py-2 px-4 min-w-44 rounded-md bg-cas-green text-cas-white hover:shadow-md hover:opacity-95">
-      {text}
+    <button className={buttonClasses} onClick={onClick}>
+      {children}
     </button>
   );
 };
