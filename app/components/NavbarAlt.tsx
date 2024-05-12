@@ -1,15 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const Navbar = () => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
+
+export const NavbarAlt = () => {
   return (
     <header className="bg-cas-white h-[8%] fixed top-0 w-full flex items-center px-8">
       <div className="z-10">
         <Link
-          href="https://linktr.ee/ieee.cas.upc"
-          className="hover:underline hover:underline-offset-2"
+          href="/"
+          className="hover:underline hover:underline-offset-2 flex"
         >
-          Visita IEEE CAS UPC
+          <FontAwesomeIcon icon={faArrowLeftLong} size="lg" />
+          <div className="ml-2">Regresar</div>
         </Link>
       </div>
       <div className="fixed w-full">
