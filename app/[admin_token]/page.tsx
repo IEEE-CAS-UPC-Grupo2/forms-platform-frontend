@@ -7,8 +7,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 export default function Page() {
   return (
     <main className="flex flex-col justify-center items-center h-screen">
-      <div className="bg-cas-gray-light p-20 flex flex-col justify-center items-center rounded shadow-cas-gray-light drop-shadow">
-        <h1>Login de Administrador</h1>
+      <div className="bg-cas-gray-light p-10 sm:p-20 flex flex-col justify-center items-center rounded shadow-cas-gray-light drop-shadow">
+        <h1 className="text-center">Login de Administrador</h1>
         <div className="flex flex-col w-full mt-10">
           <Formik
             initialValues={{
