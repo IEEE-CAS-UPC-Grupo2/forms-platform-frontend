@@ -7,7 +7,7 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
-import { useLayoutEffect, useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 export const Footer = () => {
   const [svgSize, setSvgSize] = useState({
@@ -79,19 +79,20 @@ export const Footer = () => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d={svgSize.path} />
-        <text x="50" y="50" fill="white">
-          Your Text Here
-        </text>
+        <image href="/cas-logo-horizontal.svg" className="h-12" x="28" y="16" />
       </svg>
       <div className="flex flex-col justify-center w-full nav:w-auto text-center mx-auto">
         <div className="flex flex-row justify-evenly mb-1 mx-auto w-40 ">
           <Link href="/">
             <FontAwesomeIcon icon={faTiktok} size="xl" />
+            {
+              // TODO: No TikTok available yet
+            }
           </Link>
-          <Link href="/">
+          <Link href="https://www.instagram.com/ieee.cas.upc/">
             <FontAwesomeIcon icon={faInstagram} size="xl" />
           </Link>
-          <Link href="/">
+          <Link href="https://www.linkedin.com/company/ieee-cas-upc/?viewAsMember=true">
             <FontAwesomeIcon icon={faLinkedin} size="xl" />
           </Link>
         </div>
