@@ -1,0 +1,88 @@
+{
+  "events": [
+    {
+      "ID_Event": 1,
+      "ID_Administrator": 101,
+      "EventTitle": "Tech Conference 2024",
+      "EventDescription": "A conference discussing the latest trends in technology.",
+      "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "In-Person",
+      "InstitutionInCharge": "Tech Corp",
+      "Vacancy": 150,
+      "Address": "123 Tech Street, Tech City",
+      "Speaker": "John Doe",
+      "EventDateAndTime": "2024-06-15 09:00",
+      "EventDuration": 180
+    },
+    {
+      "ID_Event": 2,
+      "ID_Administrator": 102,
+      "EventTitle": "Online Marketing Workshop",
+      "EventDescription": "Learn the best practices in online marketing.",
+      "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "Online",
+      "InstitutionInCharge": "Marketing Experts",
+      "Vacancy": 100,
+      "Address": "N/A",
+      "Speaker": "Jane Smith",
+      "EventDateAndTime": "2024-07-20 14:00",
+      "EventDuration": 120
+    },
+    {
+      "ID_Event": 3,
+      "ID_Administrator": 103,
+      "EventTitle": "Healthcare Innovations Summit",
+      "EventDescription": "Exploring the future of healthcare innovations.",
+      "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "In-Person",
+      "InstitutionInCharge": "Health Org",
+      "Vacancy": 200,
+      "Address": "456 Health Blvd, Health City",
+      "Speaker": "Dr. Emily Brown",
+      "EventDateAndTime": "2024-08-10 10:00",
+      "EventDuration": 240
+    },
+    {
+      "ID_Event": 4,
+      "ID_Administrator": 104,
+      "EventTitle": "Artificial Intelligence Bootcamp",
+      "EventDescription": "An intensive bootcamp on AI technologies.",
+      "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "Online",
+      "InstitutionInCharge": "AI Labs",
+      "Vacancy": 80,
+      "Address": "N/A",
+      "Speaker": "Dr. Alan Turing",
+      "EventDateAndTime": "2024-09-01 09:00",
+      "EventDuration": 300
+    },
+    {
+      "ID_Event": 5,
+      "ID_Administrator": 105,
+      "EventTitle": "Sustainability Workshop",
+      "EventDescription": "Workshop on sustainable practices and solutions.",
+      "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "In-Person",
+      "InstitutionInCharge": "Green Earth",
+      "Vacancy": 50,
+      "Address": "789 Green Ave, Eco City",
+      "Speaker": "Anna Green",
+      "EventDateAndTime": "2024-10-05 13:00",
+      "EventDuration": 180
+    },
+    {
+      "ID_Event": 6,
+      "ID_Administrator": 106,
+      "EventTitle": "Cybersecurity Essentials",
+      "EventDescription": "Understanding the essentials of cybersecurity.",
+      "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "Hybrid",
+      "InstitutionInCharge": "SecureNet",
+      "Vacancy": 120,
+      "Address": "123 Secure Lane, Security City",
+      "Speaker": "Michael Shields",
+      "EventDateAndTime": "2024-11-15 11:00",
+      "EventDuration": 150
+    }
+  ]
+}
