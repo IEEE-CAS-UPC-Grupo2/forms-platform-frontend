@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={montserrat.className}>
-        <div className="h-screen">
+        <div className="h-screen overflow-y-auto">
           <Navbar></Navbar>
           <div className="bg-red-400 h-[92%]">{children}</div>
         </div>

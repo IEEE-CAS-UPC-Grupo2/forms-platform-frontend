@@ -3,7 +3,7 @@
     {
       "ID_Event": 1,
       "ID_Administrator": 101,
-      "EventTitle": "Tech Conference 2024",
+      "EventTitle": "Seminario de Networking Technology IEEE CAS",
       "EventDescription": "A conference discussing the latest trends in technology.",
       "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "Modality": "In-Person",
@@ -83,6 +83,62 @@
       "Speaker": "Michael Shields",
       "EventDateAndTime": "2024-11-15 11:00",
       "EventDuration": 150
+    },
+    {
+      "ID_Event": 7,
+      "ID_Administrator": 102,
+      "EventTitle": "AI and Machine Learning Conference",
+      "EventDescription": "Explore the advancements in AI and machine learning.",
+      "ImageUrl": "https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "Online",
+      "InstitutionInCharge": "AI Innovations Ltd.",
+      "Vacancy": 300,
+      "Address": "",
+      "Speaker": "Jane Smith",
+      "EventDateAndTime": "2024-07-10 14:00",
+      "EventDuration": 120
+    },
+    {
+      "ID_Event": 8,
+      "ID_Administrator": 103,
+      "EventTitle": "Blockchain Summit 2024",
+      "EventDescription": "An in-depth look at the future of blockchain technology.",
+      "ImageUrl": "https://images.unsplash.com/photo-1526374871341-4b65e3c9c64a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "In-Person",
+      "InstitutionInCharge": "Blockchain Innovations",
+      "Vacancy": 200,
+      "Address": "456 Crypto Lane, Blockchain City",
+      "Speaker": "Alice Johnson",
+      "EventDateAndTime": "2024-08-20 10:00",
+      "EventDuration": 240
+    },
+    {
+      "ID_Event": 9,
+      "ID_Administrator": 104,
+      "EventTitle": "Cybersecurity Workshop",
+      "EventDescription": "A hands-on workshop on the latest in cybersecurity.",
+      "ImageUrl": "https://images.unsplash.com/photo-1559027615-934266ff55d6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "Hybrid",
+      "InstitutionInCharge": "SecureTech",
+      "Vacancy": 100,
+      "Address": "789 Security Blvd, Secure City",
+      "Speaker": "Michael Brown",
+      "EventDateAndTime": "2024-09-15 09:00",
+      "EventDuration": 180
+    },
+    {
+      "ID_Event": 10,
+      "ID_Administrator": 105,
+      "EventTitle": "Data Science Bootcamp",
+      "EventDescription": "Intensive bootcamp covering all aspects of data science.",
+      "ImageUrl": "https://images.unsplash.com/photo-1508923567004-3a6b8004f3d1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "Modality": "In-Person",
+      "InstitutionInCharge": "DataCamp",
+      "Vacancy": 50,
+      "Address": "101 Data Street, Data City",
+      "Speaker": "Emily Davis",
+      "EventDateAndTime": "2024-10-05 09:00",
+      "EventDuration": 360
     }
   ]
 }

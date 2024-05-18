@@ -20,6 +20,16 @@ export default function Home() {
     getEvents();
   }, []);
 
+  const today = new Date();
+
+  const sortedEvents = events
+    .filter((event) => new Date(event.EventDateAndTime) >= today)
+    .sort(
+      (a, b) =>
+        new Date(a.EventDateAndTime).getTime() -
+        new Date(b.EventDateAndTime).getTime(),
+    );
+
   return (
     <main className="flex min-h-screen flex-col pt-20">
       <div className="bg-cas-green flex flex-col justify-center text-center w-full text-cas-white p-12 shadow-cas-gray shadow-sm">
@@ -29,11 +39,13 @@ export default function Home() {
           lugar hoy mismo!
         </p>
       </div>
-      <div>SearchBar</div>
-      <div className="p-4 sm:py-10 sm:px-12 md:px-20 xl:px-40">
-        {events.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {events.map((event, index) => (
+      <div className="p-4 sm:py-10 sm:px-10 md:px-20 xl:px-32 4xl:px-48">
+        <div className="hidden md:grid md:place-content-center pb-8">
+          SearchBar
+        </div>
+        {sortedEvents.length > 0 ? (
+          <div className="grid place-content-center justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 4xl:grid-cols-5 gap-8">
+            {sortedEvents.map((event, index) => (
               <EventCard
                 key={index}
                 title={event.EventTitle}
