@@ -1,4 +1,5 @@
 export type Event = {
+  id: string;
   ID_Event: number;
   ID_Administrator: number;
   EventTitle: string;

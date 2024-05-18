@@ -1,6 +1,7 @@
 {
   "events": [
     {
+      "id": "5cf87d4a-2cb4-4a13-a95d-67a132b7d7a1",
       "ID_Event": 1,
       "ID_Administrator": 101,
       "EventTitle": "Seminario de Networking Technology IEEE CAS",
@@ -15,6 +16,7 @@
       "EventDuration": 180
     },
     {
+      "id": "43ab0e5d-747e-448b-ae7c-b465e7c7a0cf",
       "ID_Event": 2,
       "ID_Administrator": 102,
       "EventTitle": "Online Marketing Workshop",
@@ -29,6 +31,7 @@
       "EventDuration": 120
     },
     {
+      "id": "13bf50e2-9822-4785-8498-fb7e2d7ff546",
       "ID_Event": 3,
       "ID_Administrator": 103,
       "EventTitle": "Healthcare Innovations Summit",
@@ -43,6 +46,7 @@
       "EventDuration": 240
     },
     {
+      "id": "ce49be58-64fd-4737-9dc8-3aee87f5fb7d",
       "ID_Event": 4,
       "ID_Administrator": 104,
       "EventTitle": "Artificial Intelligence Bootcamp",
@@ -57,6 +61,7 @@
       "EventDuration": 300
     },
     {
+      "id": "53e2d667-76f8-43a3-9c0d-7f01a7e13b91",
       "ID_Event": 5,
       "ID_Administrator": 105,
       "EventTitle": "Sustainability Workshop",
@@ -71,6 +76,7 @@
       "EventDuration": 180
     },
     {
+      "id": "68a7b611-2cf4-4c23-8b5b-274d7a8a9993",
       "ID_Event": 6,
       "ID_Administrator": 106,
       "EventTitle": "Cybersecurity Essentials",
@@ -85,6 +91,7 @@
       "EventDuration": 150
     },
     {
+      "id": "edff5c72-b4c7-4539-80d9-cdf83dd1901a",
       "ID_Event": 7,
       "ID_Administrator": 102,
       "EventTitle": "AI and Machine Learning Conference",
@@ -99,6 +106,7 @@
       "EventDuration": 120
     },
     {
+      "id": "2a8c8a7e-f758-4202-8486-86bc628f7814",
       "ID_Event": 8,
       "ID_Administrator": 103,
       "EventTitle": "Blockchain Summit 2024",
@@ -113,6 +121,7 @@
       "EventDuration": 240
     },
     {
+      "id": "d53d4f9d-2f41-4e35-ae7e-3a51ac59e0d9",
       "ID_Event": 9,
       "ID_Administrator": 104,
       "EventTitle": "Cybersecurity Workshop",
@@ -127,6 +136,7 @@
       "EventDuration": 180
     },
     {
+      "id": "baf2d4f1-bd7d-4298-bd2f-09db1fcbcb1d",
       "ID_Event": 10,
       "ID_Administrator": 105,
       "EventTitle": "Data Science Bootcamp",

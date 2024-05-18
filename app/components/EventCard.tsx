@@ -1,19 +1,30 @@
+"use client";
+
 import Image from "next/image";
 import { formatEventDate } from "../utils/formatDate";
+import { useRouter } from "next/navigation";
 
 interface EventCardProps {
   title: string;
   date: string;
   imageSrc: string;
+  eventId: string;
 }
 
 export const EventCard: React.FC<EventCardProps> = ({
   title,
   date,
   imageSrc,
+  eventId,
 }) => {
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/event/${eventId}`);
+  };
+
   return (
-    <div className="w-[300px]">
+    <div className="w-[300px] hover:opacity-90" onClick={handleCardClick}>
       <Image
         src={imageSrc}
         alt={title}

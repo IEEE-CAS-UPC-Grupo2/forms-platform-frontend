@@ -8,6 +8,7 @@ import { formatEventDate } from "./utils/formatDate";
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getEvents = async () => {
     try {
@@ -16,6 +17,8 @@ export default function Home() {
       setEvents(data.data);
     } catch (error) {
       console.error("Error fetching events: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,18 +54,8 @@ export default function Home() {
       </div>
       <div className="px-4 py-10 sm:py-10 sm:px-10 md:px-20 xl:px-32 4xl:px-48">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        {filteredEvents.length > 0 ? (
-          <div className="grid place-content-center justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 4xl:grid-cols-5 gap-8">
-            {filteredEvents.map((event, index) => (
-              <EventCard
-                key={index}
-                title={event.EventTitle}
-                date={event.EventDateAndTime}
-                imageSrc={event.ImageUrl}
-              />
-            ))}
-          </div>
-        ) : (
+
+        {loading ? (
           <svg
             className="animate-spin text-cas-green w-20 h-20 mx-auto text-center mt-20"
             xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +68,7 @@ export default function Home() {
               cy="12"
               r="10"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             ></circle>
             <path
               className="opacity-75"
@@ -83,6 +76,22 @@ export default function Home() {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
+        ) : filteredEvents.length > 0 ? (
+          <div className="grid place-content-center justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 4xl:grid-cols-5 gap-8">
+            {filteredEvents.map((event, index) => (
+              <EventCard
+                key={index}
+                title={event.EventTitle}
+                date={event.EventDateAndTime}
+                imageSrc={event.ImageUrl}
+                eventId={event.id}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-cas-gray-mid">
+            No se han encontrado eventos.
+          </p>
         )}
       </div>
     </main>
