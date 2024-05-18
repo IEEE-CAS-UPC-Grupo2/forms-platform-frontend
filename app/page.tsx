@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Event } from "./api/events/data";
 import { EventCard } from "./components/EventCard";
+import { SearchBar } from "./components/SearchBar";
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -32,17 +33,15 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col pt-20">
-      <div className="bg-cas-green flex flex-col justify-center text-center w-full text-cas-white p-12 shadow-cas-gray shadow-sm">
+      <div className="bg-cas-green flex flex-col justify-center text-center w-full text-cas-white p-12 shadow-cas-black/20 shadow-md">
         <h1 className="mb-4">Próximos Eventos</h1>
         <p>
           Descubre eventos próximos: conferencias, talleres y más. ¡Asegura tu
           lugar hoy mismo!
         </p>
       </div>
-      <div className="p-4 sm:py-10 sm:px-10 md:px-20 xl:px-32 4xl:px-48">
-        <div className="hidden md:grid md:place-content-center pb-8">
-          SearchBar
-        </div>
+      <div className="px-4 py-10 sm:py-10 sm:px-10 md:px-20 xl:px-32 4xl:px-48">
+        <SearchBar />
         {sortedEvents.length > 0 ? (
           <div className="grid place-content-center justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 4xl:grid-cols-5 gap-8">
             {sortedEvents.map((event, index) => (
