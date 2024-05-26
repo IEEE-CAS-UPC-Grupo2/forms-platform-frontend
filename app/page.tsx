@@ -54,7 +54,6 @@ export default function Home() {
       </div>
       <div className="px-4 py-10 sm:py-10 sm:px-10 md:px-20 xl:px-32 4xl:px-48">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
         {loading ? (
           <svg
             className="animate-spin text-cas-green w-20 h-20 mx-auto text-center mt-20"
