@@ -48,29 +48,29 @@ export default function Page({
 
                         <div className="flex flex-col bg-white p-2 rounded w-full">
                             <label>Nombre del evento</label>
-                            <div className="bg-cas-white p-2 m-2 rounded">{event.EventTitle}</div>
+                            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">{event.EventTitle}</div>
                             <label>Duración del evento</label>
-                            <div className="bg-cas-white p-2 m-2 rounded">{event.EventDuration}</div>
+                            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">{event.EventDuration}</div>
                             <label>Modalidad</label>
-                            <div className="bg-cas-white p-2 m-2 rounded">{event.Modality}</div>
+                            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">{event.Modality}</div>
                         </div>
 
                     <div className="flex flex-col bg-white p-2 rounded w-full m-4">
                         <label>Fecha y Hora de inicio</label>
-                        <div className="bg-cas-white p-2 m-2 rounded">{event.EventDateAndTime}</div>
+                        <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">{event.EventDateAndTime}</div>
                         <label>Dirección del evento</label>
-                        <div className="bg-cas-white p-2 m-2 rounded">{event.Address}</div>
+                        <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">{event.Address}</div>
                         <label>Facultad de Lugar</label>
-                        <div className="bg-cas-white p-2 m-2 rounded">{event.InstitutionInCharge}</div>
+                        <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">{event.InstitutionInCharge}</div>
                         </div>
 
                     </div>
 
                     <div className="flex flex-col p-4 rounded mt-4 w-full">
                         <label>URL de imagen del evento</label>
-                        <div className="bg-cas-white p-2 m-2 rounded break-all" >{event.ImageUrl}</div>
+                        <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all" >{event.ImageUrl}</div>
                         <label>Descripción del evento</label>
-                        <div className="bg-cas-white p-2 m-2 rounded break-all" >{event.EventDescription}</div>
+                        <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all" >{event.EventDescription}</div>
                     </div>
 
                     <CustomButton onClick={() => {
