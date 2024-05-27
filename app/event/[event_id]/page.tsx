@@ -32,6 +32,13 @@ export default function Page({ params }: { params: { event_id: string } }) {
     }
   };
 
+  const scrollToSection = () => {
+    const registrationSection = document.getElementById("registration");
+    if (registrationSection) {
+      registrationSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   useEffect(() => {
     getEvent();
   }, []);
@@ -43,7 +50,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
 
   return (
     <main className="flex min-h-screen flex-col pt-24">
-      <div className="px-10 sm:px-24 md:px-32 xl:px-48 2xl:px-64 4xl:px-64">
+      <div className="px-4 sm:px-24 md:px-32 xl:px-48 2xl:px-64 4xl:px-64">
         <div className="bg-cas-black w-full rounded-2xl">
           <Image
             src={event.ImageUrl}
@@ -73,19 +80,17 @@ export default function Page({ params }: { params: { event_id: string } }) {
                 icon={faLocationDot}
                 size="xl"
               />
-              <p className="text-lg">
-                {formatEventDate(event.EventDateAndTime).toLowerCase()}
-              </p>
+              <p>{formatEventDate(event.EventDateAndTime).toLowerCase()}</p>
             </div>
             <h2 className="mt-6">Institución a cargo</h2>
             <div className="flex flex-row items-center mt-2">
               <FontAwesomeIcon className="mr-4" icon={faCity} size="xl" />
-              <p className="text-lg">{event.InstitutionInCharge}</p>
+              <p>{event.InstitutionInCharge}</p>
             </div>
             <h2 className="mt-6">Modalidad</h2>
             <div className="flex flex-row items-center mt-2">
               <FontAwesomeIcon className="mr-4" icon={faPassport} size="xl" />
-              <p className="text-lg">
+              <p>
                 {event.Modality} - {event.Address}
               </p>
             </div>
@@ -96,11 +101,11 @@ export default function Page({ params }: { params: { event_id: string } }) {
                 icon={faPeopleGroup}
                 size="xl"
               />
-              <p className="text-lg">{event.Vacancy} personas</p>
+              <p>{event.Vacancy} personas</p>
             </div>
           </div>
           <div className="hidden lg:block w-3/12 text-right">
-            <CustomButton>
+            <CustomButton onClick={scrollToSection}>
               <FontAwesomeIcon className="pr-2" icon={faArrowDown} size="lg" />
               Registrate al evento
             </CustomButton>

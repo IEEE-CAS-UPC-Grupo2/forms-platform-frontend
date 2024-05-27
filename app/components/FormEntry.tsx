@@ -16,14 +16,14 @@ export const FormEntry: React.FC<FormEntryProps> = ({
   options = [],
 }) => {
   return (
-    <div className="flex flex-col mt-4">
-      <small>{title}</small>
+    <div className="flex flex-col min-h-24">
+      <p>{title}</p>
       {as === "select" ? (
         <Field
           as="select"
           id={name}
           name={name}
-          className="mt-1 p-1 border-cas-gray-mid border-[0.5px] rounded text-sm"
+          className="mt-1 p-2 border-cas-gray-mid border-[0.5px] rounded text-sm"
         >
           {options.map((option) => (
             <option key={option} value={option}>
@@ -37,7 +37,7 @@ export const FormEntry: React.FC<FormEntryProps> = ({
           id={name}
           name={name}
           as={as}
-          className="mt-1 p-1 border-cas-gray-mid border-[0.5px] rounded text-sm"
+          className="mt-1 p-2 border-cas-gray-mid border-[0.5px] rounded text-sm"
         />
       )}
       <ErrorMessage className="text-xs mt-1" name={name} component="div" />
