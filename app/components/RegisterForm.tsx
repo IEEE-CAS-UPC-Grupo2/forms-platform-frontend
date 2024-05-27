@@ -8,7 +8,7 @@ import { institutions } from "@/data/institutions";
 
 export const RegisterForm = () => {
   return (
-    <div className="bg-cas-gray-light rounded-2xl py-4 md:py-8 px-4 md:px-10 my-16 mx-auto w-[95%]">
+    <div className="bg-cas-gray-light rounded-2xl py-4 md:py-8 px-4 md:px-10 my-16 lg:mb-36 mx-auto w-[95%]">
       <div className="flex flex-row items-center mt-2 mb-6">
         <FontAwesomeIcon className="mr-4" icon={faPenToSquare} size="xl" />
         <h2>Registro al evento</h2>
