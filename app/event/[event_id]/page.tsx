@@ -14,6 +14,7 @@ import { Event } from "./../../api/events/data";
 import { useEffect, useState } from "react";
 import { formatEventDate } from "./../../utils/formatDate";
 import { CustomButton } from "@/app/components/CustomButton";
+import { RegisterForm } from "@/app/components/RegisterForm";
 
 export default function Page({ params }: { params: { event_id: string } }) {
   const [event, setEvent] = useState<Event>();
@@ -105,6 +106,9 @@ export default function Page({ params }: { params: { event_id: string } }) {
             </CustomButton>
           </div>
         </div>
+        <section id="registration">
+          <RegisterForm />
+        </section>
       </div>
     </main>
   );
