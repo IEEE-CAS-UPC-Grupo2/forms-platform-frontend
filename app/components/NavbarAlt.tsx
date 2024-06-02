@@ -6,7 +6,7 @@ import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 
 export const NavbarAlt = () => {
   return (
-    <header className="bg-cas-white h-[8%] fixed top-0 w-full flex items-center px-8">
+    <header className="z-10 bg-cas-white h-[8%] fixed top-0 w-full flex items-center px-8">
       <div className="z-10">
         <Link
           href="/"

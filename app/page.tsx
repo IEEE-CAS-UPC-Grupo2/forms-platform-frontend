@@ -4,6 +4,7 @@ import { Event } from "./api/events/data";
 import { EventCard } from "./components/EventCard";
 import { SearchBar } from "./components/SearchBar";
 import { formatEventDate } from "./utils/formatDate";
+import { Navbar } from "./components/Navbar";
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -44,7 +45,8 @@ export default function Home() {
     );
 
   return (
-    <main className="flex min-h-screen flex-col pt-20">
+    <main className="flex min-h-screen flex-col">
+      <Navbar />
       <div className="bg-cas-green flex flex-col justify-center text-center w-full text-cas-white p-12 shadow-cas-black/20 shadow-md">
         <h1 className="mb-4">Próximos Eventos</h1>
         <p>
@@ -54,7 +56,6 @@ export default function Home() {
       </div>
       <div className="px-4 py-10 sm:py-10 sm:px-10 md:px-20 xl:px-32 4xl:px-48">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
         {loading ? (
           <svg
             className="animate-spin text-cas-green w-20 h-20 mx-auto text-center mt-20"

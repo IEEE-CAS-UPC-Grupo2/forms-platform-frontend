@@ -71,7 +71,7 @@ export const Footer = () => {
   }, []);
 
   return (
-    <footer className="flex flex-row bg-cas-green h-20 text-cas-white">
+    <footer className="fixed bottom-0 left-0 right-0 flex flex-row bg-cas-green h-20 text-cas-white">
       <svg
         className="w-auto fill-cas-gray h-20 hidden nav:flex"
         viewBox={svgSize.viewBox}
