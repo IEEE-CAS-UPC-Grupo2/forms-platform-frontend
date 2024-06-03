@@ -19,11 +19,12 @@ export const EventRow: React.FC<EventRowProps> = ({
 
     const handleEdit = () => {
         //redirigir al usuario a la página de edición
-        router.push(`/eventos/editar/${id}`);
+        router.push(`/[admin_token]/panel/${id}`);
     };
 
-    const handleView = () => {
-        //lógica para ver las sesiones del evento
+    const handleViewClick = () => {
+        //visualizar evento
+        router.push(`/[admin_token]/panel/view/${id}`);
     };
 
     const handleDelete = () => {
