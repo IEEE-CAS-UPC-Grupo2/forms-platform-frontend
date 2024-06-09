@@ -5,10 +5,14 @@ import { CustomButton } from "../components/CustomButton";
 import { Formik, Form } from "formik";
 import { FormEntry } from "../components/FormEntry";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
-
+  const router = useRouter();
+  const handleCardClick = () => {
+    router.push(`[admin_token]/panel/`);
+  };
   const handleLogin = async (values: any) => {
     try {
       const response = await fetch("http://localhost:5022/api/Security/Autenticar", {
@@ -26,9 +30,13 @@ export default function Page() {
         throw new Error("Network response was not ok");
       }
 
+      handleCardClick();
       const data = await response.json();
+      document.cookie = `jwt=${data.token}; path=/;`;
+
       console.log("Authentication response:", data);
       // TODO: Redirect to admin dashboard
+     
     } catch (error) {
       console.error("Error authenticating user:", error);
       setErrorMessage("An error occurred. Please try again.");
