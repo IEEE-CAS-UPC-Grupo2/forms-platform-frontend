@@ -15,7 +15,7 @@ export default function AdminLayout({
     <div>
       <div className="h-screen">
         <NavbarAdmin></NavbarAdmin>
-        <div className="h-[92%]">{children}</div>
+        <div>{children}</div>
       </div>
     </div>
   );

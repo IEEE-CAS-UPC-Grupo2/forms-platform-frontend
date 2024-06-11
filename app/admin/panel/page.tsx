@@ -4,7 +4,6 @@ import { Event } from "@/app/api/events/data";
 
 import { AdminEventTable } from "@/app/components/AdminEventTable";
 export default function Page() {
-
   const [events, setEvents] = useState<Event[]>([]);
 
   const getEvents = async () => {
@@ -21,16 +20,19 @@ export default function Page() {
     getEvents();
   }, []);
 
+  const sortedEvents = events.sort(
+    (a, b) =>
+      new Date(a.EventDateAndTime).getTime() -
+      new Date(b.EventDateAndTime).getTime(),
+  );
 
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen ">
-      
-      <h1 className="mb-4">Admin Panel Page</h1>
+    <main className="flex flex-col pt-20 sm:pt-28 items-center min-h-screen mx-4">
+      <h1 className="mb-4 text-center">Panel de Administrador</h1>
 
-      <div className="w-full max-w-6xl">
-        <AdminEventTable eventos={events} />
+      <div className="w-full max-w-6xl mt-4">
+        <AdminEventTable eventos={sortedEvents} />
       </div>
-
     </main>
   );
 }
