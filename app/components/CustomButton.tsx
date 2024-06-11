@@ -3,6 +3,7 @@ interface CustomButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit";
+  disabled?: boolean;
 }
 
 export const CustomButton: React.FC<CustomButtonProps> = ({
@@ -10,6 +11,7 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   children,
   onClick,
   type = "button",
+  disabled,
 }) => {
   let buttonClasses =
     "py-3 px-4 min-w-40 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90";
@@ -27,7 +29,7 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   }
 
   return (
-    <button className={buttonClasses} onClick={onClick} type={type}>
+    <button className={buttonClasses} onClick={onClick} type={type} disabled={disabled}>
       {children}
     </button>
   );
