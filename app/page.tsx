@@ -15,6 +15,7 @@ export default function Home() {
     try {
       const response = await fetch("/api/events");
       const data = await response.json();
+      console.log(data);
       setEvents(data.data);
     } catch (error) {
       console.error("Error fetching events: ", error);
@@ -78,7 +79,7 @@ export default function Home() {
             ></path>
           </svg>
         ) : filteredEvents.length > 0 ? (
-          <div className="grid place-content-center justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 4xl:grid-cols-5 gap-8">
+          <div className="grid place-content-center justify-items-center grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 4xl:grid-cols-5 gap-8 pb-20">
             {filteredEvents.map((event, index) => (
               <EventCard
                 key={index}
