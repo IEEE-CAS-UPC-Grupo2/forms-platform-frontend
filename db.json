@@ -5,14 +5,14 @@
       "ID_Event": 1,
       "ID_Administrator": 101,
       "EventTitle": "Seminario de Networking Technology IEEE CAS",
-      "EventDescription": "Join us for the Seminario de Networking Technology IEEE CAS, where we will delve into the latest trends and advancements in networking technology. This comprehensive conference brings together leading experts and innovators to discuss the future of networking, including emerging technologies, cutting-edge research, and practical applications. Attendees will have the opportunity to participate in insightful sessions, engage in meaningful discussions, and network with industry professionals. Topics covered will range from 5G technology and Internet of Things (IoT) to cybersecurity and cloud computing. Whether you're a seasoned professional or a newcomer to the field, this event offers valuable insights and knowledge to enhance your understanding and skills in networking technology. Don't miss out on this chance to learn from and connect with the best in the industry. Register now to secure your spot at this must-attend event.",
+      "EventDescription": "Join us for the Seminario de Networking Technology IEEE CAS, where we will delve into the latest trends and advancements in networking technology. This comprehensive conference brings together leading experts and innovators to discuss the future of networking, including emerging technologies, cutting-edge research, and practical applications. Attendees will have the opportunity to participate in insightful sessions, engage in meaningful discussions, and network with industry professionals. Topics covered will range from 5G technology and Internet of Things (IoT) to cybersecurity and cloud computing.",
       "ImageUrl": "https://images.unsplash.com/photo-1591115765373-5207764f72e7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "Modality": "In-Person",
       "InstitutionInCharge": "Tech Corp",
       "Vacancy": 150,
       "Address": "123 Tech Street, Tech City",
       "Speaker": "John Doe",
-      "EventDateAndTime": "2024-06-15 09:00",
+      "EventDateAndTime": "2024-06-27 09:00",
       "EventDuration": 180
     },
     {
@@ -162,7 +162,7 @@
       "Vacancy": 150,
       "Address": "123 Tech Street, Tech City",
       "Speaker": "John Doe",
-      "EventDateAndTime": "2024-06-15 09:00",
+      "EventDateAndTime": "2024-06-28 09:00",
       "EventDuration": 180
     },
     {

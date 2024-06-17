@@ -15,7 +15,7 @@ export default function AdminLayout({
     <div>
       <div className="h-screen">
         <NavbarAlt></NavbarAlt>
-        <div className="h-[92%]">{children}</div>
+        <div className="h-full">{children}</div>
       </div>
     </div>
   );
