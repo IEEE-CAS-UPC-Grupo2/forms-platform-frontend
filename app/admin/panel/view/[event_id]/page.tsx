@@ -49,12 +49,14 @@ export default function Page({
 
           <div className="flex flex-row justify-center items-center flex-wrap w-full z-10">
             
-            <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[250px] lg:w-1/2 w-full">
+            <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
+
               <label>Nombre del evento</label>
               <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
                h-15 overflow-x-auto whitespace-nowrap" title={event.EventTitle}>
                 <span>{event.EventTitle}</span>
               </div>
+              
               <label>Duración del evento</label>
               <div className="flex flex-row justify-center items-center">
                 <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded-l rounded-r-none
@@ -62,12 +64,14 @@ export default function Page({
                   {event.EventDuration}
                 </div>
                 <img src="/clock-icon.png" alt="Clock icon" className=" h-11 w-11"/>
-              </div>           
+              </div>  
+
               <label>Modalidad</label>
               <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
                h-15 overflow-x-auto whitespace-nowrap">
                 {event.Modality}
               </div>
+
               <label>Ponentes</label>
               <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
                h-15 overflow-x-auto whitespace-nowrap">
@@ -75,7 +79,7 @@ export default function Page({
               </div>
             </div>
 
-            <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[250px] lg:w-1/2 w-full">
+            <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
               <label>Fecha y Hora de inicio</label>
               <div className="flex flex-row justify-center items-center">
                 <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded-l rounded-r-none
@@ -105,19 +109,21 @@ export default function Page({
           </div>
 
           <div className="flex flex-col pb-4 px-4 rounded w-full">
+
             <label>URL de imagen del evento</label>
-            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded 
+            <div className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded 
             overflow-x-auto whitespace-nowrap">
               {event.ImageUrl}
             </div>
+
             <label>Descripción del evento</label>
-            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all">
+            <div className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all">
               {event.EventDescription}
             </div>
+
           </div>
 
-          <CustomButton
-            color="black"
+          <CustomButton color="black"
             onClick={() => {
               router.push(`/admin/panel`);
             }}
