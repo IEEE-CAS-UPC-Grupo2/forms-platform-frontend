@@ -1,6 +1,8 @@
 "use client";
 
 import { CustomButton } from "@/app/components/CustomButton";
+import { faClock, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 
 export default function Page({
@@ -31,64 +33,97 @@ export default function Page({
   };
 
   return (
-    <main style={{ overflowY: "hidden" }}>
-      <div className="mt-28">
+    <main className="overflow-auto pt-4 pb-20 z-10">
+
+      <div className="mt-16 flex flex-col justify-center items-center">
+
         <div className="flex flex-col justify-center items-center my-8">
-          <h1>Visualización de evento</h1>
+          <h1 className="text-center">Visualización de evento</h1>
         </div>
 
-        <div
-          className="bg-cas-gray-light 
+        <div className="bg-cas-gray-light 
                 sm:p-5 flex flex-col justify-center 
                 items-center rounded shadow-cas-gray-light 
-                drop-shadow mx-24 mb-20"
-          style={{ overflow: "hidden" }}
+                drop-shadow w-2/3 sm:w-3/5"
         >
-          <div className="flex flex-col sm:flex-row justify-center items-center w-full mb-4 space-y-4 sm:space-y-0 sm:space-x-20">
-            <div className="flex flex-col bg-white p-2 rounded w-full">
+
+          <div className="flex flex-row justify-center items-center flex-wrap w-full z-10">
+            
+            <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
+
               <label>Nombre del evento</label>
-              <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">
-                {event.EventTitle}
+              <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
+               h-15 overflow-x-auto whitespace-nowrap" title={event.EventTitle}>
+                <span>{event.EventTitle}</span>
               </div>
+              
               <label>Duración del evento</label>
-              <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">
-                {event.EventDuration}
-              </div>
+              <div className="flex flex-row justify-center items-center">
+                <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded-l rounded-r-none
+               h-15 overflow-x-auto whitespace-nowrap w-full">
+                  {event.EventDuration}
+                </div>
+                <img src="/clock-icon.png" alt="Clock icon" className=" h-11 w-11"/>
+              </div>  
+
               <label>Modalidad</label>
-              <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">
+              <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
+               h-15 overflow-x-auto whitespace-nowrap">
                 {event.Modality}
               </div>
+
+              <label>Ponentes</label>
+              <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
+               h-15 overflow-x-auto whitespace-nowrap">
+                {event.Speaker}
+              </div>
             </div>
 
-            <div className="flex flex-col bg-white p-2 rounded w-full m-4">
+            <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
               <label>Fecha y Hora de inicio</label>
-              <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">
-                {event.EventDateAndTime}
+              <div className="flex flex-row justify-center items-center">
+                <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded-l rounded-r-none
+               h-15 overflow-x-auto whitespace-nowrap w-full">
+                  {event.EventDateAndTime}
+                </div>
+                <img src="/calendar-icon.png" alt="Clock icon" className=" h-11 w-11"/>
               </div>
-              <label>Dirección del evento</label>
-              <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">
-                {event.Address}
-              </div>
-              <label>Facultad de Lugar</label>
-              <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded">
+              
+              <label>Instituciones a cargo</label>
+              <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
+               h-15 overflow-x-auto whitespace-nowrap w-full">
                 {event.InstitutionInCharge}
               </div>
+              <label>Lugar</label>
+              <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
+               h-15 overflow-x-auto whitespace-nowrap w-full">
+                {event.Address}
+              </div>
+              <label>Vacantes disponibles</label>
+              <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded
+               h-15 overflow-x-auto whitespace-nowrap w-full">
+                {event.Vacancy}
+              </div>
             </div>
+
           </div>
 
-          <div className="flex flex-col p-4 rounded mt-4 w-full">
+          <div className="flex flex-col pb-4 px-4 rounded w-full">
+
             <label>URL de imagen del evento</label>
-            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all">
+            <div className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded 
+            overflow-x-auto whitespace-nowrap">
               {event.ImageUrl}
             </div>
+
             <label>Descripción del evento</label>
-            <div className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all">
+            <div className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all">
               {event.EventDescription}
             </div>
+
           </div>
 
-          <CustomButton
-            color="black"
+          <CustomButton color="black"
             onClick={() => {
               router.push(`/admin/panel`);
             }}

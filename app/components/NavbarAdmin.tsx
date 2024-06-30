@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export const NavbarAdmin = () => {
   return (
-    <header className="bg-cas-white h-[8%] fixed top-0 w-full flex items-center px-8">
-      <div className="z-10 w-full flex justify-end">
+    <header className="z-50 bg-cas-white h-[8%] fixed top-0 w-full flex items-center px-8">
+      <div className="w-full flex justify-end">
         <Link href="/" className="hover:underline hover:underline-offset-2">
           Logout
         </Link>
