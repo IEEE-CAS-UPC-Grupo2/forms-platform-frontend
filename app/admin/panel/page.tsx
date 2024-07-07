@@ -22,8 +22,8 @@ export default function Page() {
 
   const sortedEvents = events.sort(
     (a, b) =>
-      new Date(a.EventDateTime).getTime() -
-      new Date(b.EventDateTime).getTime(),
+      new Date(a.EventDateAndTime).getTime() -
+      new Date(b.EventDateAndTime).getTime(),
   );
 
   return (
