@@ -2,6 +2,7 @@
 
 import { CustomButton } from "../components/CustomButton";
 import { EventRow } from "./EventRow";
+import { useRouter } from "next/navigation";
 import { Event } from "../api/events/data";
 
 interface TablaProps {
@@ -9,6 +10,9 @@ interface TablaProps {
 }
 
 export function AdminEventTable({ eventos }: TablaProps) {
+  
+  const router = useRouter(); 
+
   const handleAddEvent = () => {
     //lógica para agregar un nuevo evento
   };
@@ -18,7 +22,7 @@ export function AdminEventTable({ eventos }: TablaProps) {
       <div className="flex flex-col md:flex-row justify-between items-center bg-cas-gray-light p-2 rounded-t-lg">
         <h2 className="text-lg font-semibold px-4">Detalles de los Eventos</h2>
         <div className="py-2 px-4">
-          <CustomButton onClick={handleAddEvent}>
+          <CustomButton onClick={() => { router.push(`/admin/panel/create`);}}>
             <span>Crear nuevo evento</span>
           </CustomButton>
         </div>

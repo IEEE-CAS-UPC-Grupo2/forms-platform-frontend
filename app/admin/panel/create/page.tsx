@@ -18,20 +18,23 @@ export default function Page() {
     InstitutionInCharge: Yup.string().required("Required"),
     ImageUrl: Yup.string().url("Must be a valid URL").required("Required"),
     EventDescription: Yup.string().required("Required"),
+    Vacancy: Yup.number().required("Required").positive("Must be positive").integer("Must be an integer"),
+    Speaker: Yup.string().required("Required"),
   });
 
   return (
-    <main className="mt-20" >
+    <main className="overflow-auto pt-4 pb-28" >
 
-      <div className="my-32">
+      <div className="mt-16 flex flex-col justify-center items-center">
+
         <div className="flex flex-col justify-center items-center my-8">
-          <h1>Edición de evento</h1>
+          <h1 className="text-center">Creación de nuevo evento</h1>
         </div>
 
         <div className="bg-cas-gray-light 
-        sm:p-5 flex flex-col justify-center 
-        items-center rounded shadow-cas-gray-light 
-        drop-shadow mx-24 mb-20" style={{ overflow: 'hidden' }} >
+                sm:p-5 flex flex-col justify-center 
+                items-center rounded shadow-cas-gray-light 
+                drop-shadow w-2/3 sm:w-3/5" >
 
           <Formik initialValues={{
             EventTitle: "",
@@ -42,6 +45,8 @@ export default function Page() {
             InstitutionInCharge: "",
             ImageUrl:"",
             EventDescription: "",
+            Vacancy: "",
+            Speaker: "",
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
@@ -51,54 +56,75 @@ export default function Page() {
             }}
           >
             {({ isSubmitting, values }) => (
-              <Form className="w-full">
-                <div className="flex flex-col sm:flex-row justify-center items-center w-full mb-4 space-y-4 sm:space-y-0 sm:space-x-20">
-                  <div className="flex flex-col bg-white p-2 rounded w-full">
+              <Form className="w-full z-10">
+                <div className="flex flex-row justify-center items-center flex-wrap w-full">
+                  <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
+
                     <label>Nombre del evento</label>
                     <Field type="text" name="EventTitle"
-                      className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded"
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <label>Duración del evento (minutos)</label>
-                    <Field type="number" name="EventDuration" 
-                      className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded"
+                    <ErrorMessage name="EventTitle" component="div" className="text-red-500 text-sm"/>
+
+                    <label>Duración del evento</label>
+                    <Field type="text" name="EventDuration" placeholder="hh:mm" pattern="^([0-9]{1,2}):([0-5][0-9])$"
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
+                    <ErrorMessage name="EventDuration" component="div" className="text-red-500 text-sm"/>
+
                     <label>Modalidad</label>
-                    <Field type="text" name="Modality" 
-                      className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded"
+                    <Field as="select" name="Modality" 
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap">
+                      <option value="virtual">Virtual</option>
+                      <option value="presencial">Presencial</option>
+                    </Field>
+                    <ErrorMessage name="Modality" component="div" className="text-red-500 text-sm"/>
+                    
+                    <label>Ponentes (separar c/u con commas “,” )</label>
+                    <Field type="text" name="Speaker" 
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
+                    <ErrorMessage name="Speaker" component="div" className="text-red-500 text-sm"/>
+
                   </div>
 
-                  <div className="flex flex-col bg-white p-2 rounded w-full m-4">
+                  <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
                     <label>Fecha y Hora de inicio</label>
                     <Field type="datetime-local" name="EventDateAndTime"
-                      className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded"
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage name="EventDateAndTime" component="div" className="text-red-500 text-sm" />
                     
-                    <label>Dirección del evento</label>
-                    <Field type="text" name="Address" 
-                      className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded"
-                    />
-                    <ErrorMessage name="Address" component="div" className="text-red-500 text-sm" />
-                    
-                    <label>Facultad de Lugar</label>
+                    <label>Instituciones a cargo (separar c/u con commas “,” )</label>
                     <Field type="text" name="InstitutionInCharge" 
-                      className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded"
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage name="InstitutionInCharge" component="div" className="text-red-500 text-sm" />
+                    
+                    <label>Lugar</label>
+                    <Field type="text" name="Address" 
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
+                    />
+                    <ErrorMessage name="Address" component="div" className="text-red-500 text-sm" />
+
+                    <label>Vacantes disponibles</label>
+                    <Field type="number" name="Vacancy" 
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
+                    />
+                    <ErrorMessage name="Vacancy" component="div" className="text-red-500 text-sm"/>
                   </div>
                 </div>
 
-                <div className="flex flex-col p-4 rounded mt-4 w-full">
+                <div className="flex flex-col pb-4 px-4 rounded w-full">
                   <label>URL de imagen del evento</label>
                   <Field type="text" name="ImageUrl" 
-                    className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded overflow-x-auto whitespace-nowrap"
                   />
                   <ErrorMessage name="ImageUrl" component="div" className="text-red-500 text-sm" />
                   
                   <label>Descripción del evento</label>
-                  <Field type="text" name="EventDescription" 
-                    className="bg-cas-white p-2 m-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                  <Field as="textarea" name="EventDescription" rows="5"
+                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
                   />
                   <ErrorMessage name="EventDescription" component="div" className="text-red-500 text-sm" />
                   
@@ -106,13 +132,17 @@ export default function Page() {
 
                 <div className="flex justify-center mt-6">
 
-                  <CustomButton onClick={() => { router.push(`/admin/panel`);}}>
-                    Regresar
-                  </CustomButton>
+                  <button className="bg-cas-black text-cas-white py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                  onClick={() => { router.push(`/admin/panel`);}}>
+                    Cancelar
+                  </button>
+
                   <div className="p-2 mx-8"></div>
-                  <CustomButton type="submit" disabled={isSubmitting}>
+                  <button className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                  type="submit" disabled={isSubmitting}>
                     Registrar
-                  </CustomButton>
+                  </button>
+
                 </div>
               </Form>
             )}
