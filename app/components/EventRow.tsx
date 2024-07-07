@@ -7,25 +7,25 @@ import { useRouter } from "next/navigation";
 
 interface EventRowProps {
   EventTitle: string;
-  EventDateAndTime: string;
-  id: string;
+  EventDateTime: string;
+  IdEvent: number;
 }
 
 export const EventRow: React.FC<EventRowProps> = ({
   EventTitle,
-  EventDateAndTime,
-  id,
+  EventDateTime,
+  IdEvent,
 }) => {
   const router = useRouter();
 
   const handleEdit = () => {
     //redirigir al usuario a la página de edición
-    router.push(`/admin/panel/${id}`);
+    router.push(`/admin/panel/${IdEvent}`);
   };
 
   const handleViewClick = () => {
     //visualizar evento
-    router.push(`/admin/panel/view/${id}`);
+    router.push(`/admin/panel/view/${IdEvent}`);
   };
 
   const handleDelete = () => {
@@ -36,7 +36,7 @@ export const EventRow: React.FC<EventRowProps> = ({
     <div className="flex py-1 px-8 border-b border-cas-gray-light">
       <div className="flex-initial w-5/12 flex items-center">{EventTitle}</div>
       <div className="flex-1 flex px-4 items-center">
-        {formatEventDate(EventDateAndTime)}
+        {formatEventDate(EventDateTime)}
       </div>
       <div className="flex-1 flex justify-end items-center space-x-4">
         <button onClick={handleEdit}>

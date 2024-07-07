@@ -11,7 +11,7 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   const handleCardClick = () => {
-    router.push(`[admin_token]/panel/`);
+    router.push(`admin/panel/`);
   };
   const handleLogin = async (values: any) => {
     try {

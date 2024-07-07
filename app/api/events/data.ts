@@ -1,15 +1,14 @@
 export type Event = {
-  id: string;
-  ID_Event: number;
-  ID_Administrator: number;
+  IdEvent: number;
   EventTitle: string;
   EventDescription: string;
   ImageUrl: string;
   Modality: string;
   InstitutionInCharge: string;
   Vacancy: number;
-  Address: string;
+  AddressEvent: string;
   Speaker: string;
-  EventDateAndTime: string;
+  EventDateTime: string;
   EventDuration: number;
+  IdAdministrator: number;
 };

@@ -34,7 +34,7 @@ export function AdminEventTable({ eventos }: TablaProps) {
         </div>
 
         {eventos.map((evento) => (
-          <EventRow key={evento.id} {...evento} />
+          <EventRow key={evento.IdEvent} {...evento} />
         ))}
       </div>
     </div>
