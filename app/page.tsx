@@ -13,7 +13,7 @@ export default function Home() {
 
   const getEvents = async () => {
     try {
-      const response = await fetch("/api/events");
+      const response = await fetch("/api/EventsCa/List");
       const data = await response.json();
       console.log(data);
       setEvents(data.data);
@@ -31,18 +31,18 @@ export default function Home() {
   const today = new Date();
 
   const filteredEvents = events
-    .filter((event) => new Date(event.EventDateAndTime) >= today)
+    .filter((event) => new Date(event.eventDateTime) >= today)
     .filter(
       (event) =>
-        event.EventTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        formatEventDate(event.EventDateAndTime)
+        event.eventTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        formatEventDate(event.eventDateTime)
           .toLowerCase()
           .includes(searchQuery.toLowerCase()),
     )
     .sort(
       (a, b) =>
-        new Date(a.EventDateAndTime).getTime() -
-        new Date(b.EventDateAndTime).getTime(),
+        new Date(a.eventDateTime).getTime() -
+        new Date(b.eventDateTime).getTime(),
     );
 
   return (
@@ -83,9 +83,9 @@ export default function Home() {
             {filteredEvents.map((event, index) => (
               <EventCard
                 key={index}
-                title={event.EventTitle}
-                date={event.EventDateAndTime}
-                imageSrc={event.ImageUrl}
+                title={event.eventTitle}
+                date={event.eventDateTime}
+                imageSrc={event.imageUrl}
                 eventId={event.id}
               />
             ))}

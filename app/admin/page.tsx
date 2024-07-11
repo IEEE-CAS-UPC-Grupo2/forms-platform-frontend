@@ -6,17 +6,18 @@ import { Formik, Form } from "formik";
 import { FormEntry } from "../components/FormEntry";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import environment from '../environments/environments.prod'; // Importa el archivo de configuración
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   const handleCardClick = () => {
-    router.push(`[admin_token]/panel/`);
+    router.push(`admin/panel/`);
   };
   const handleLogin = async (values: any) => {
     try {
       const response = await fetch(
-        "http://localhost:5022/api/Security/Autenticar",
+        environment.apiBaseUrl+"/Security/Autenticar",
         {
           method: "POST",
           headers: {

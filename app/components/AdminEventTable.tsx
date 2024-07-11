@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomButton } from "../components/CustomButton";
-import { EventRow } from "./EventRow";
+import EventRow  from "./EventRow";
 import { useRouter } from "next/navigation";
 import { Event } from "../api/events/data";
 

@@ -73,8 +73,8 @@ export default function Page({ params }: { params: { event_id: string } }) {
       <div className="px-4 sm:px-24 md:px-32 xl:px-48 2xl:px-64 4xl:px-64">
         <div className="bg-cas-black w-full rounded-2xl">
           <Image
-            src={event.ImageUrl}
-            alt={event.EventTitle}
+            src={event.imageUrl}
+            alt={event.eventTitle}
             width={640}
             height={400}
             className="h-auto lg:h-[400px] xl:h-[440px] 2xl:h-[480px] w-full rounded-2xl md:rounded-none md:w-3/5 mx-auto"
@@ -82,17 +82,17 @@ export default function Page({ params }: { params: { event_id: string } }) {
         </div>
         <div className="flex flex-row mt-12">
           <div className="lg:w-9/12 pr-4">
-            <h2>{formatEventDate(event.EventDateAndTime).toLowerCase()}</h2>
-            <h1>{event.EventTitle}</h1>
+            <h2>{formatEventDate(event.eventDateTime).toLowerCase()}</h2>
+            <h1>{event.eventTitle}</h1>
             <div className="flex flex-row items-center mt-4">
               <FontAwesomeIcon
                 className="mr-4"
                 icon={faPersonChalkboard}
                 size="xl"
               />
-              <h2>{event.Speaker}</h2>
+              <h2>{event.speaker}</h2>
             </div>
-            <p className="mt-6">{event.EventDescription}</p>
+            <p className="mt-6">{event.eventDescription}</p>
             <h2 className="mt-6">Fecha y Hora</h2>
             <div className="flex flex-row items-center mt-2">
               <FontAwesomeIcon
@@ -100,18 +100,18 @@ export default function Page({ params }: { params: { event_id: string } }) {
                 icon={faLocationDot}
                 size="xl"
               />
-              <p>{formatEventDate(event.EventDateAndTime).toLowerCase()}</p>
+              <p>{formatEventDate(event.eventDateTime).toLowerCase()}</p>
             </div>
             <h2 className="mt-6">Institución a cargo</h2>
             <div className="flex flex-row items-center mt-2">
               <FontAwesomeIcon className="mr-4" icon={faCity} size="xl" />
-              <p>{event.InstitutionInCharge}</p>
+              <p>{event.institutionInCharge}</p>
             </div>
             <h2 className="mt-6">Modalidad</h2>
             <div className="flex flex-row items-center mt-2">
               <FontAwesomeIcon className="mr-4" icon={faPassport} size="xl" />
               <p>
-                {event.Modality} - {event.Address}
+                {event.modality} - {event.addressEvent}
               </p>
             </div>
             <h2 className="mt-6">Vacantes</h2>
@@ -121,7 +121,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
                 icon={faPeopleGroup}
                 size="xl"
               />
-              <p>{event.Vacancy} personas</p>
+              <p>{event.vacancy} personas</p>
             </div>
           </div>
           <div className="hidden lg:block w-3/12 text-right">

@@ -4,6 +4,7 @@ import { CustomButton } from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
 
 export default function Page() {
 
@@ -13,8 +14,8 @@ export default function Page() {
     EventTitle: Yup.string().required("Required"),
     EventDuration: Yup.number().required("Required").positive("Must be positive").integer("Must be an integer"),
     Modality: Yup.string().required("Required"),
-    EventDateAndTime: Yup.date().required("Required"),
-    Address: Yup.string().required("Required"),
+    EventDateTime: Yup.date().required("Required"),
+    AddressEvent: Yup.string().required("Required"),
     InstitutionInCharge: Yup.string().required("Required"),
     ImageUrl: Yup.string().url("Must be a valid URL").required("Required"),
     EventDescription: Yup.string().required("Required"),
@@ -40,8 +41,8 @@ export default function Page() {
             EventTitle: "",
             EventDuration: "",
             Modality: "",
-            EventDateAndTime: "",
-            Address: "",
+            EventDateTime: "",
+            AddressEvent: "",
             InstitutionInCharge: "",
             ImageUrl:"",
             EventDescription: "",
@@ -49,10 +50,31 @@ export default function Page() {
             Speaker: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-              console.log(values);
-              // logica del envio, conexión con backend
-              router.push(`/admin/panel`);
+            onSubmit={async (values, { setSubmitting }) => {
+              try {
+                const jwtCookie = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+                const response = await fetch(environment.apiBaseUrl+"/EventsCa/Save", {
+                  method: "POST",
+                  headers: {
+                    "Authorization": `Bearer ${jwtCookie}`,
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(values),
+                });
+
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+
+                const data = await response.json();
+                console.log("Event created:", data);
+                router.push(`/admin/panel`);
+              } catch (error) {
+                console.error("Error creating event:", error);
+              } finally {
+                setSubmitting(false);
+              }
             }}
           >
             {({ isSubmitting, values }) => (
@@ -67,7 +89,7 @@ export default function Page() {
                     <ErrorMessage name="EventTitle" component="div" className="text-red-500 text-sm"/>
 
                     <label>Duración del evento</label>
-                    <Field type="text" name="EventDuration" placeholder="hh:mm" pattern="^([0-9]{1,2}):([0-5][0-9])$"
+                    <Field type="text" name="EventDuration" placeholder="hh:mm"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage name="EventDuration" component="div" className="text-red-500 text-sm"/>
@@ -80,7 +102,7 @@ export default function Page() {
                     </Field>
                     <ErrorMessage name="Modality" component="div" className="text-red-500 text-sm"/>
                     
-                    <label>Ponentes (separar c/u con commas “,” )</label>
+                    <label>Ponentes (separar c/u con comas “,” )</label>
                     <Field type="text" name="Speaker" 
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
@@ -90,19 +112,19 @@ export default function Page() {
 
                   <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
                     <label>Fecha y Hora de inicio</label>
-                    <Field type="datetime-local" name="EventDateAndTime"
+                    <Field type="datetime-local" name="EventDateTime"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="EventDateAndTime" component="div" className="text-red-500 text-sm" />
+                    <ErrorMessage name="EventDateTime" component="div" className="text-red-500 text-sm" />
                     
-                    <label>Instituciones a cargo (separar c/u con commas “,” )</label>
+                    <label>Instituciones a cargo (separar c/u con comas “,” )</label>
                     <Field type="text" name="InstitutionInCharge" 
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage name="InstitutionInCharge" component="div" className="text-red-500 text-sm" />
                     
                     <label>Lugar</label>
-                    <Field type="text" name="Address" 
+                    <Field type="text" name="AddressEvent" 
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage name="Address" component="div" className="text-red-500 text-sm" />

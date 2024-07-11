@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import environment from '../../environments/environments.prod'; // Importa el archivo de configuración
 
 interface Params {
   event_id: string;
@@ -7,7 +8,7 @@ interface Params {
 export async function GET({ params }: { params: { event_id: string } }) {
   const { event_id } = params;
 
-  const res = await fetch(`http://localhost:3005/events/${event_id}`, {
+  const res = await fetch(environment.apiBaseUrl+`/EventsCa/${event_id}`, {
     headers: {
       "Content-Type": "application/json",
     },
