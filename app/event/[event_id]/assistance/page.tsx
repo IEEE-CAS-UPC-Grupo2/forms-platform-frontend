@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
       <div className="mt-4 flex flex-col justify-center items-center pb-28">
         <div className="mx-4 sm:mx-10 bg-cas-gray-light px-4 py-10 lg:px-32 sm:py-12 flex flex-col rounded shadow-cas-gray-light drop-shadow my-10 items-center text-center">
           <h1 className="mb-4 min-w-[16rem] sm:max-w-[36rem] px-4">
-            {event.EventTitle}
+            {event.eventTitle}
           </h1>
           <div className="flex flex-row mt-2 mb-8">
             <FontAwesomeIcon
@@ -74,7 +74,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
               icon={faPersonChalkboard}
               size="xl"
             />
-            <h2>{event.Speaker}</h2>
+            <h2>{event.speaker}</h2>
           </div>
           <Formik
             initialValues={{
