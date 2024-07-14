@@ -1,7 +1,6 @@
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 export type Event = {
-  id: string;
   idEvent: number;
   idAdministrator: number;
   eventTitle: string;
@@ -18,5 +17,5 @@ export type Event = {
 
 export const formatEventDateTime = (dateTime: string): string => {
   const date = new Date(dateTime);
-  return format(date, 'yyyy/MM/dd HH:mm:ss');
+  return format(date, "yyyy/MM/dd HH:mm:ss");
 };
