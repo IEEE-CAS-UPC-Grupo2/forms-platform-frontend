@@ -64,16 +64,16 @@ export default function Page({ params }: { params: { event_id: string } }) {
       </h1>
       <div className="flex-grow flex flex-col justify-center items-center pb-24">
         <div className="bg-cas-gray-light p-10 sm:px-20 sm:py-12 flex flex-col rounded shadow-cas-gray-light drop-shadow max-w-[85%] lg:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[65%] my-10">
-          <h1 className="mb-4">{event.EventTitle}</h1>
+          <h1 className="mb-4">{event.eventTitle}</h1>
           <div className="flex flex-row  mt-4">
             <FontAwesomeIcon
               className="mr-4"
               icon={faPersonChalkboard}
               size="xl"
             />
-            <h2>{event.Speaker}</h2>
+            <h2>{event.speaker}</h2>
           </div>
-          <p className="mt-6">{event.EventDescription}</p>
+          <p className="mt-6">{event.eventDescription}</p>
           <div className="grid grid-cols-1 lg:grid-cols-2">
             <div>
               <h2 className="mt-6">Fecha y Hora</h2>
@@ -83,7 +83,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
                   icon={faLocationDot}
                   size="xl"
                 />
-                <p>{formatEventDate(event.EventDateAndTime).toLowerCase()}</p>
+                <p>{formatEventDate(event.eventDateTime).toLowerCase()}</p>
               </div>
             </div>
             <div>
@@ -91,7 +91,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
               <div className="flex flex-row items-center mt-2">
                 <FontAwesomeIcon className="mr-4" icon={faPassport} size="xl" />
                 <p>
-                  {event.Modality} - {event.Address}
+                  {event.modality} - {event.addressEvent}
                 </p>
               </div>
             </div>

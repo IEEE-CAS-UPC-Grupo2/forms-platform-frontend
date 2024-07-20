@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 export type Event = {
-  id: string;
   idEvent: number;
   idAdministrator: number;
   eventTitle: string;

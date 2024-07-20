@@ -8,7 +8,7 @@ interface EventCardProps {
   title: string;
   date: string;
   imageSrc: string;
-  eventId: string;
+  eventId: number;
 }
 
 export const EventCard: React.FC<EventCardProps> = ({

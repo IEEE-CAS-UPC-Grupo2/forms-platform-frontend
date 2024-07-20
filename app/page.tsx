@@ -5,6 +5,7 @@ import { EventCard } from "./components/EventCard";
 import { SearchBar } from "./components/SearchBar";
 import { formatEventDate } from "./utils/formatDate";
 import { Navbar } from "./components/Navbar";
+import environment from "./environments/environments.prod";
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -13,10 +14,19 @@ export default function Home() {
 
   const getEvents = async () => {
     try {
-      const response = await fetch("/api/EventsCa/List");
-      const data = await response.json();
+      const res = await fetch(environment.apiBaseUrl + `/EventsCa/List`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to get events data.");
+      }
+
+      const data = await res.json();
       console.log(data);
-      setEvents(data.data);
+      setEvents(data.value);
     } catch (error) {
       console.error("Error fetching events: ", error);
     } finally {
@@ -86,7 +96,7 @@ export default function Home() {
                 title={event.eventTitle}
                 date={event.eventDateTime}
                 imageSrc={event.imageUrl}
-                eventId={event.id}
+                eventId={event.idEvent}
               />
             ))}
           </div>
