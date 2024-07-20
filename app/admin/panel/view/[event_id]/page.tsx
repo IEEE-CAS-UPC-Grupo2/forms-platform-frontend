@@ -4,8 +4,9 @@ import { CustomButton } from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Event } from "./../../../../api/events/data";
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import environment from './../../../../environments/environments.prod'; // Importa el archivo de configuración
+import { getCookieValue } from '../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
 
 export default function Page({
   params,
@@ -18,7 +19,8 @@ export default function Page({
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const jwtCookie = document.cookie.replace(/(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/, "$1");
+        
+        const jwtCookie = getCookieValue('jwt');
         const response = await fetch(environment.apiBaseUrl+`/EventsCa/${params.event_id}`, {
           headers: {
             "Authorization": `Bearer ${jwtCookie}`,
@@ -46,10 +48,12 @@ export default function Page({
     fetchEvent();
   }, [params.event_id]);
 
+
   const formatEventDateTime = (dateTime: string): string => {
-    const date = new Date(dateTime);
-    return format(date, 'yyyy/MM/dd HH:mm:ss');
+    const date = dayjs(dateTime);
+    return date.format('YYYY/MM/DD HH:mm:ss');
   };
+
 
   if (!event) {
     return <p>Loading...</p>;
@@ -88,7 +92,7 @@ export default function Page({
               <label>Fecha y Hora de inicio</label>
               <div className="flex flex-row justify-center items-center">
                 <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded-l rounded-r-none h-15 overflow-x-auto whitespace-nowrap w-full">
-                  {formatEventDateTime(event.eventDateTime)}
+                  {formatEventDateTime(event.eventDateAndTime)}
                 </div>
                 <img src="/calendar-icon.png" alt="Clock icon" className=" h-11 w-11"/>
               </div>
@@ -98,7 +102,7 @@ export default function Page({
               </div>
               <label>Lugar</label>
               <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap w-full">
-                {event.addressEvent}
+                {event.address}
               </div>
               <label>Vacantes disponibles</label>
               <div className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap w-full">

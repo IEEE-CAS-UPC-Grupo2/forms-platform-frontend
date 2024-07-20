@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 
 export type Event = {
   id: string;
@@ -10,13 +10,13 @@ export type Event = {
   modality: string;
   institutionInCharge: string;
   vacancy: number;
-  addressEvent: string;
+  address: string;
   speaker: string;
-  eventDateTime: string;
+  eventDateAndTime: string;
   eventDuration: number;
 };
 
-export const formatEventDateTime = (dateTime: string): string => {
-  const date = new Date(dateTime);
-  return format(date, 'yyyy/MM/dd HH:mm:ss');
+export const formatEventDateTime = (eventDateTime: string): string => {
+  const date = dayjs(eventDateTime);
+  return date.format('yyyy/MM/dd HH:mm:ss');
 };

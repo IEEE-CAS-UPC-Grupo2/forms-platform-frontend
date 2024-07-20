@@ -1,20 +1,47 @@
 "use client";
 
+import { useState } from "react";
 import { CustomButton } from "../components/CustomButton";
-import EventRow  from "./EventRow";
+import EventRow from "./EventRow";
 import { useRouter } from "next/navigation";
 import { Event } from "../api/events/data";
+import environment from '../environments/environments.prod'; // Importa el archivo de configuración
+import api from '../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
 
 interface TablaProps {
   eventos: Event[];
 }
 
 export function AdminEventTable({ eventos }: TablaProps) {
-  
-  const router = useRouter(); 
+  const [eventList, setEventList] = useState<Event[]>(eventos);
+  const router = useRouter();
 
   const handleAddEvent = () => {
-    //lógica para agregar un nuevo evento
+    // lógica para agregar un nuevo evento
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await api.delete(`/EventsCa/Delete/${id}`);
+      
+      if (response.status !== 200) {
+        throw new Error('Error al eliminar el evento');
+      }
+
+      console.log('Evento eliminado exitosamente');
+      // Filtrar el evento eliminado de la lista de eventos
+      setEventList(prevEventList => prevEventList.filter(evento => evento.idEvent !== id));
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleEdit = (id: number) => {
+    router.push(`/admin/panel/${id}`);
+  };
+
+  const handleView = (id: number) => {
+    router.push(`/admin/panel/view/${id}`);
   };
 
   return (
@@ -22,7 +49,7 @@ export function AdminEventTable({ eventos }: TablaProps) {
       <div className="flex flex-col md:flex-row justify-between items-center bg-cas-gray-light p-2 rounded-t-lg">
         <h2 className="text-lg font-semibold px-4">Detalles de los Eventos</h2>
         <div className="py-2 px-4">
-          <CustomButton onClick={() => { router.push(`/admin/panel/create`);}}>
+          <CustomButton onClick={() => { router.push(`/admin/panel/create`); }}>
             <span>Crear nuevo evento</span>
           </CustomButton>
         </div>
@@ -37,8 +64,14 @@ export function AdminEventTable({ eventos }: TablaProps) {
           <div className="flex-1 flex justify-end px-6 py-1">Opciones</div>
         </div>
 
-        {eventos.map((evento) => (
-          <EventRow key={evento.id} {...evento} />
+        {eventList.map((evento) => (
+          <EventRow 
+            key={evento.idEvent} 
+            event={evento} 
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+            onView={handleView} 
+          />
         ))}
       </div>
     </div>

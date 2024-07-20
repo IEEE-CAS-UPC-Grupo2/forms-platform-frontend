@@ -6,44 +6,38 @@ import { Formik, Form } from "formik";
 import { FormEntry } from "../components/FormEntry";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import environment from '../environments/environments.prod'; // Importa el archivo de configuración
+import api from '../Interceptors/axiosConfig'; // Importa Axios configurado
+import { cookies } from 'next/headers';
+import { setCookieValue } from '../utils/cookies/setCookie'; // Asegúrate de importar correctamente
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+
   const handleCardClick = () => {
     router.push(`admin/panel/`);
   };
-  const handleLogin = async (values: any) => {
-    try {
-      const response = await fetch(
-        environment.apiBaseUrl+"/Security/Autenticar",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: values.email,
-            clave: values.password,
-          }),
-        },
-      );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  const handleLogin = async (values:any) => {
+    try {
+      const response = await api.post('/Security/Autenticar', {
+        email: values.email,
+        clave: values.password,
+      });
+
+      const data = response.data;
+      
+      setCookieValue('idUser',data.idUsuarioAdm);
+      setCookieValue('jwt',data.token);
+      setCookieValue('refreshToken',data.refreshToken);
 
       handleCardClick();
-      const data = await response.json();
-      document.cookie = `jwt=${data.token}; path=/;`;
 
       console.log("Authentication response:", data);
 
-      // TODO: Redirect to admin dashboard
     } catch (error) {
       console.error("Error authenticating user:", error);
-      setErrorMessage("Ocurrio un error. Porfavor intentelo denuevo.");
+      setErrorMessage("Ocurrió un error. Por favor, inténtelo de nuevo.");
     }
   };
 

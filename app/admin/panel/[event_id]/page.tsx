@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { Event } from "../../../api/events/data";
 import { useState, useEffect } from "react";
 import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
+import { getCookieValue } from '../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
 
 export default function Page({
   params,
@@ -32,10 +33,9 @@ export default function Page({
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const jwtCookie = document.cookie.replace(
-          /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
-          "$1"
-        );
+
+        const jwtCookie = getCookieValue('jwt');
+
         const response = await fetch(
           environment.apiBaseUrl+`/EventsCa/${params.event_id}`,
           {
@@ -68,11 +68,7 @@ export default function Page({
 
   const updateEvent = async (values: any) => {
     try {
-      console.log("entra");
-      const jwtCookie = document.cookie.replace(
-        /(?:(?:^|.*;\s*)jwt\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
+          const jwtCookie = getCookieValue('jwt');
 
       const updatedEvent = {
         idEvent: params.event_id,
@@ -82,9 +78,9 @@ export default function Page({
         modality: values.Modality,
         institutionInCharge: values.InstitutionInCharge,
         vacancy: values.Vacancy,
-        addressEvent: values.Address,
+        address: values.Address,
         speaker: values.Speaker,
-        eventDateTime: values.EventDateAndTime,
+        eventDateAndTime: values.EventDateAndTime,
         eventDuration: values.EventDuration,
       };
 
@@ -126,8 +122,8 @@ export default function Page({
               EventTitle: event?.eventTitle || "",
               EventDuration: event?.eventDuration || "",
               Modality: event?.modality || "",
-              EventDateAndTime: event?.eventDateTime || "",
-              Address: event?.addressEvent || "",
+              EventDateAndTime: event?.eventDateAndTime || "",
+              Address: event?.address || "",
               InstitutionInCharge: event?.institutionInCharge || "",
               ImageUrl: event?.imageUrl || "",
               EventDescription: event?.eventDescription || "",
@@ -207,7 +203,7 @@ export default function Page({
                     <Field
                       type="datetime-local"
                       name="EventDateAndTime"
-                      placeholder={event?.eventDateTime}
+                      placeholder={event?.eventDateAndTime}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
@@ -235,7 +231,7 @@ export default function Page({
                     <Field
                       type="text"
                       name="Address"
-                      placeholder={event?.addressEvent}
+                      placeholder={event?.address}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
