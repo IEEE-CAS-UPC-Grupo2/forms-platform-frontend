@@ -41,18 +41,18 @@ export default function Home() {
   const today = new Date();
 
   const filteredEvents = events
-    .filter((event) => new Date(event.eventDateTime) >= today)
+    .filter((event) => new Date(event.eventDateAndTime) >= today)
     .filter(
       (event) =>
         event.eventTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        formatEventDate(event.eventDateTime)
+        formatEventDate(event.eventDateAndTime)
           .toLowerCase()
           .includes(searchQuery.toLowerCase()),
     )
     .sort(
       (a, b) =>
-        new Date(a.eventDateTime).getTime() -
-        new Date(b.eventDateTime).getTime(),
+        new Date(a.eventDateAndTime).getTime() -
+        new Date(b.eventDateAndTime).getTime(),
     );
 
   return (
@@ -94,7 +94,7 @@ export default function Home() {
               <EventCard
                 key={index}
                 title={event.eventTitle}
-                date={event.eventDateTime}
+                date={event.eventDateAndTime}
                 imageSrc={event.imageUrl}
                 eventId={event.idEvent}
               />
