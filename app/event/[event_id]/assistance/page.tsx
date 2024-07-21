@@ -8,26 +8,25 @@ import { faPersonChalkboard } from "@fortawesome/free-solid-svg-icons";
 import { Form, Formik } from "formik";
 import { assistanceSchema } from "@/validations/assistanceSchema";
 import { FormEntry } from "@/app/components/FormEntry";
+import { getPlatformEventById } from "@/app/api/platform-event";
+import { updateAttendance } from "@/app/api/participation";
+import { Attendance } from "@/app/models/attendance";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { event_id: string } }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [event, setEvent] = useState<Event>();
+  const router = useRouter();
 
   const getEvent = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3005/events/${params.event_id}`,
-      );
-      const data = await response.json();
-      console.log(data);
+      const data = await getPlatformEventById(Number(params.event_id));
       setEvent(data);
     } catch (error) {
       console.error("Error fetching event: ", error);
     }
-  };
-
-  const handleMarkAssistance = async (values: any) => {
-    console.log(values);
   };
 
   useEffect(() => {
@@ -79,9 +78,30 @@ export default function Page({ params }: { params: { event_id: string } }) {
           <Formik
             initialValues={{
               email: "",
-              password: "",
+              dni: "",
             }}
-            onSubmit={handleMarkAssistance}
+            onSubmit={async (values, { resetForm }) => {
+              const newAttendance: Attendance = {
+                idEvent: Number(params.event_id),
+                dni: values.dni,
+                email: values.email,
+              };
+              try {
+                const response = await updateAttendance(newAttendance);
+                console.log("Attendance marked successfully:", response);
+                resetForm();
+                toast.success("La asistencia fue marcada exitosamente.", {
+                  onClose: () => {
+                    router.push(`/`);
+                  },
+                });
+              } catch (error) {
+                console.error("Error marking attendance: ", error);
+                toast.error(
+                  "Hubo un error al marcar su participación. Intentelo de nuevo.",
+                );
+              }
+            }}
             validationSchema={assistanceSchema}
           >
             <Form className="min-w-[16rem] sm:min-w-[24rem] text-start">
@@ -103,6 +123,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
           </Formik>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 
 export const assistanceSchema = Yup.object({
-  name: Yup.string().required("No se ha ingresado un nombre."),
   dni: Yup.string()
     .required("No se ha ingresado un DNI.")
     .length(8, "Debe ser 8 carácteres."),

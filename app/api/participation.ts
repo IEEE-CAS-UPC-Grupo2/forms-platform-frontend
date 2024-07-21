@@ -34,7 +34,7 @@ export const updateAttendance = async (
   attendance: Attendance,
 ): Promise<boolean> => {
   try {
-    const response = await axios.put<Response<boolean>>(
+    const response = await axios.patch<Response<boolean>>(
       `${BASE_URL}/Attendance`,
       attendance,
     );
