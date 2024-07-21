@@ -6,9 +6,8 @@ import { Formik, Form } from "formik";
 import { FormEntry } from "../components/FormEntry";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import api from '../Interceptors/axiosConfig'; // Importa Axios configurado
-import { cookies } from 'next/headers';
-import { setCookieValue } from '../utils/cookies/setCookie'; // Asegúrate de importar correctamente
+import api from "../Interceptors/axiosConfig"; // Importa Axios configurado
+import { setCookieValue } from "../utils/cookies/setCookie"; // Asegúrate de importar correctamente
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -18,23 +17,22 @@ export default function Page() {
     router.push(`admin/panel/`);
   };
 
-  const handleLogin = async (values:any) => {
+  const handleLogin = async (values: any) => {
     try {
-      const response = await api.post('/Security/Autenticar', {
+      const response = await api.post("/Security/Autenticar", {
         email: values.email,
         clave: values.password,
       });
 
       const data = response.data;
-      
-      setCookieValue('idUser',data.idUsuarioAdm);
-      setCookieValue('jwt',data.token);
-      setCookieValue('refreshToken',data.refreshToken);
+
+      setCookieValue("idUser", data.idUsuarioAdm);
+      setCookieValue("jwt", data.token);
+      setCookieValue("refreshToken", data.refreshToken);
 
       handleCardClick();
 
       console.log("Authentication response:", data);
-
     } catch (error) {
       console.error("Error authenticating user:", error);
       setErrorMessage("Ocurrió un error. Por favor, inténtelo de nuevo.");

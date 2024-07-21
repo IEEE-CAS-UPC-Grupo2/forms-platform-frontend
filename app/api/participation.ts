@@ -11,12 +11,12 @@ interface Response<T> {
   msg?: string;
 }
 
-export const createParticipation = async (
+export const saveParticipation = async (
   participation: Participation,
 ): Promise<Participation> => {
   try {
     const response = await axios.post<Response<Participation>>(
-      `${BASE_URL}/Create`,
+      `${BASE_URL}/Save`,
       participation,
     );
     if (response.data.status) {
@@ -35,7 +35,7 @@ export const updateAttendance = async (
 ): Promise<boolean> => {
   try {
     const response = await axios.put<Response<boolean>>(
-      `${BASE_URL}/UpdateAttendance`,
+      `${BASE_URL}/Attendance`,
       attendance,
     );
     if (response.data.status) {

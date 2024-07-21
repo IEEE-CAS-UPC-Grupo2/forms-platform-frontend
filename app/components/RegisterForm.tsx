@@ -5,8 +5,10 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { CustomButton } from "./CustomButton";
 import { FormEntry } from "./FormEntry";
 import { studyCenters } from "@/data/studyCenters";
-import { createParticipation } from "../api/participation";
+import { saveParticipation } from "../api/participation";
 import { Participation } from "../models/participation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface RegisterFormProps {
   idEvent: number;
@@ -42,12 +44,17 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ idEvent }) => {
 
           try {
             const createdParticipation =
-              await createParticipation(newParticipation);
+              await saveParticipation(newParticipation);
+            resetForm();
+            toast.success("Se ha registrado exitosamente al evento");
             console.log(
               "Participation created successfully:",
               createdParticipation,
             );
           } catch (error) {
+            toast.error(
+              "Hubo un error al crear su participación. Intentelo de nuevo.",
+            );
             console.error("Error creating participation:", error);
           }
         }}
@@ -79,6 +86,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ idEvent }) => {
           </div>
         </Form>
       </Formik>
+      <ToastContainer />
     </div>
   );
 };

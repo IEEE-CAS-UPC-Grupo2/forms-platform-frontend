@@ -29,7 +29,12 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
   }
 
   return (
-    <button className={buttonClasses} onClick={onClick} type={type} disabled={disabled}>
+    <button
+      className={buttonClasses}
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

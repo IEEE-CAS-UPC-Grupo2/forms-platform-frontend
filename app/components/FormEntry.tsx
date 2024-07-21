@@ -5,7 +5,7 @@ interface FormEntryProps {
   type?: "text" | "email" | "password";
   name: string;
   as?: "input" | "select" | "textarea";
-  options?: string[];
+  options?: { value: string; label: string }[];
 }
 
 export const FormEntry: React.FC<FormEntryProps> = ({
@@ -25,11 +25,12 @@ export const FormEntry: React.FC<FormEntryProps> = ({
           name={name}
           className="mt-1 p-2 border-cas-gray-mid border-[0.5px] rounded text-sm"
         >
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+          {Array.isArray(options) &&
+            options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
         </Field>
       ) : (
         <Field
