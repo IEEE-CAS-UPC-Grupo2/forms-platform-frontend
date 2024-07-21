@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Event } from "./../../../api/events/data";
+import { Event } from "../../../models/event";
 import { CustomButton } from "@/app/components/CustomButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonChalkboard } from "@fortawesome/free-solid-svg-icons";

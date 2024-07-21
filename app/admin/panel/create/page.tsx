@@ -63,7 +63,7 @@ export default function Page() {
                   IdAdministrator:IdAdm
                 };
 
-                const response = await fetch(environment.apiBaseUrl + "/EventsCa/Save", {
+                const response = await fetch(environment.apiBaseUrl + "/PlatformEvent/Save", {
                   method: "POST",
                   headers: {
                     "Authorization": `Bearer ${jwtCookie}`,
@@ -163,7 +163,7 @@ export default function Page() {
                 </div>
 
                 <div className="flex justify-center mt-6">
-                  <button className="bg-cas-black text-cas-white py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                  <button className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
                   onClick={() => { router.push(`/admin/panel`);}}>
                     Cancelar
                   </button>

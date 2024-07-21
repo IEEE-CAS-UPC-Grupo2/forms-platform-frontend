@@ -3,7 +3,7 @@
 import { CustomButton } from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Event } from "./../../../../api/events/data";
+import { Event } from "../../../../models/event";
 import dayjs from 'dayjs';
 import environment from './../../../../environments/environments.prod'; // Importa el archivo de configuración
 import { getCookieValue } from '../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
@@ -21,7 +21,7 @@ export default function Page({
       try {
         
         const jwtCookie = getCookieValue('jwt');
-        const response = await fetch(environment.apiBaseUrl+`/EventsCa/${params.event_id}`, {
+        const response = await fetch(environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`, {
           headers: {
             "Authorization": `Bearer ${jwtCookie}`,
             "Content-Type": "application/json"

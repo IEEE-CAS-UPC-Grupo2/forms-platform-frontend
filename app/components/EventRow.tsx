@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { formatEventDate } from "../utils/formatDate";
 import { useRouter } from "next/navigation";
-import { Event } from "../api/events/data";
+import { Event } from "../models/event";
 import environment from "../environments/environments.prod";
 
 interface EventProps {

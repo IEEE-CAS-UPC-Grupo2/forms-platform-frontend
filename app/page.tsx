@@ -1,40 +1,31 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Event } from "./api/events/data";
+import { Event } from "./models/event";
 import { EventCard } from "./components/EventCard";
 import { SearchBar } from "./components/SearchBar";
 import { formatEventDate } from "./utils/formatDate";
 import { Navbar } from "./components/Navbar";
-import environment from "./environments/environments.prod";
+import { getPlatformEvents } from "./api/platform-event";
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
-  const getEvents = async () => {
-    try {
-      const res = await fetch(environment.apiBaseUrl + `/EventsCa/List`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to get events data.");
-      }
-
-      const data = await res.json();
-      console.log(data);
-      setEvents(data.value);
-    } catch (error) {
-      console.error("Error fetching events: ", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
+    const getEvents = async () => {
+      try {
+        const data = await getPlatformEvents();
+        console.log(data);
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     getEvents();
   }, []);
 

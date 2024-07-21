@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 export type Event = {
   idEvent: number;
@@ -17,5 +17,5 @@ export type Event = {
 
 export const formatEventDateTime = (eventDateTime: string): string => {
   const date = dayjs(eventDateTime);
-  return date.format('yyyy/MM/dd HH:mm:ss');
+  return date.format("dd/MM/yyyy HH:mm:ss");
 };

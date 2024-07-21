@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Event } from "@/app/api/events/data";
-import environment from '../../environments/environments.prod'; // Importa el archivo de configuración
+import environment from "../../environments/environments.prod"; // Importa el archivo de configuración
 import { AdminEventTable } from "@/app/components/AdminEventTable";
-import { getCookieValue } from '../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
+import { Event } from "@/app/models/event";
+import { getPlatformEvents } from "@/app/api/platform-event";
 
 export default function Page() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -12,25 +12,11 @@ export default function Page() {
   useEffect(() => {
     const getEvents = async () => {
       try {
-        const jwtCookie = getCookieValue('jwt');
-
-        const response = await fetch(environment.apiBaseUrl + `/EventsCa/List`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${jwtCookie}`,
-            "Content-Type": "application/json"
-          },
-        });
-  
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-  
-        const data = await response.json();
-        if (data.status && Array.isArray(data.value)) {
-          // Filtra eventos únicos por idEvent
-          const uniqueEvents = Array.from(new Set(data.value.map((event: Event) => event.idEvent)))
-            .map(id => data.value.find((event: Event) => event.idEvent === id));
+        const data = await getPlatformEvents();
+        if (data && Array.isArray(data)) {
+          const uniqueEvents = Array.from(
+            new Set(data.map((event: Event) => event.idEvent))
+          ).map((id) => data.find((event: Event) => event.idEvent === id)).filter((event) => event !== undefined) as Event[];
           setEvents(uniqueEvents);
         } else {
           throw new Error("Unexpected response format");
@@ -48,7 +34,7 @@ export default function Page() {
   const sortedEvents = events.sort(
     (a, b) =>
       new Date(a.eventDateAndTime).getTime() -
-      new Date(b.eventDateAndTime).getTime(),
+      new Date(b.eventDateAndTime).getTime()
   );
 
   return (

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CustomButton } from "../components/CustomButton";
 import EventRow from "./EventRow";
 import { useRouter } from "next/navigation";
-import { Event } from "../api/events/data";
+import { Event } from "../models/event";
 import environment from '../environments/environments.prod'; // Importa el archivo de configuración
 import api from '../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
 
@@ -22,7 +22,7 @@ export function AdminEventTable({ eventos }: TablaProps) {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await api.delete(`/EventsCa/Delete/${id}`);
+      const response = await api.delete(`/PlatformEvent/Delete/${id}`);
       
       if (response.status !== 200) {
         throw new Error('Error al eliminar el evento');

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation"; // Importa desde next/navigation en lugar de next/router
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Event } from "../../../api/events/data";
+import { Event } from "../../../models/event";
 import { useState, useEffect } from "react";
 import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
 import { getCookieValue } from '../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
@@ -37,7 +37,7 @@ export default function Page({
         const jwtCookie = getCookieValue('jwt');
 
         const response = await fetch(
-          environment.apiBaseUrl+`/EventsCa/${params.event_id}`,
+          environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`,
           {
             headers: {
               Authorization: `Bearer ${jwtCookie}`,
@@ -86,7 +86,7 @@ export default function Page({
 
       const response = await fetch(
         
-        environment.apiBaseUrl+`/EventsCa/Edit`,
+        environment.apiBaseUrl+`/PlatformEvent/Edit`,
         {
           method: "PUT",
           headers: {
@@ -286,7 +286,7 @@ export default function Page({
 
                 <div className="flex flex-row justify-center items-center w-full">
                   <button
-                    className="bg-cas-black text-cas-white py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                    className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
                     onClick={() => {
                       router.push(`/admin/panel`);
                     }}

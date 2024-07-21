@@ -10,7 +10,7 @@ import {
   faArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { Event } from "./../../api/events/data";
+import { Event } from "../../models/event";
 import { useEffect, useState } from "react";
 import { formatEventDate } from "./../../utils/formatDate";
 import { CustomButton } from "@/app/components/CustomButton";

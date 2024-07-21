@@ -9,7 +9,7 @@ import {
   faPassport,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { Event } from "./../../../api/events/data";
+import { Event } from "../../../models/event";
 import { formatEventDate } from "@/app/utils/formatDate";
 
 export default function Page({ params }: { params: { event_id: string } }) {
