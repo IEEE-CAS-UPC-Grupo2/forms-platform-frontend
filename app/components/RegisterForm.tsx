@@ -9,12 +9,15 @@ import { saveParticipation } from "../api/participation";
 import { Participation } from "../models/participation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 interface RegisterFormProps {
   idEvent: number;
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ idEvent }) => {
+  const router = useRouter();
+
   return (
     <div className="bg-cas-gray-light rounded-2xl py-4 md:py-8 px-4 md:px-10 my-16 lg:mb-36 mx-auto w-[95%]">
       <div className="flex flex-row items-center mt-2 mb-6">
@@ -43,14 +46,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ idEvent }) => {
           };
 
           try {
-            const createdParticipation =
-              await saveParticipation(newParticipation);
+            await saveParticipation(newParticipation);
             resetForm();
-            toast.success("Se ha registrado exitosamente al evento");
-            console.log(
-              "Participation created successfully:",
-              createdParticipation,
-            );
+            const currentPath = window.location.pathname;
+            router.push(`${currentPath}/register`);
           } catch (error) {
             toast.error(
               "Hubo un error al crear su participación. Intentelo de nuevo.",

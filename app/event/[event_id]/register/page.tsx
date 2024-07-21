@@ -11,21 +11,28 @@ import {
 import { useEffect, useState } from "react";
 import { Event } from "../../../models/event";
 import { formatEventDate } from "@/app/utils/formatDate";
+import { getPlatformEventById } from "@/app/api/platform-event";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Page({ params }: { params: { event_id: string } }) {
   const [event, setEvent] = useState<Event>();
 
   const getEvent = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3005/events/${params.event_id}`,
-      );
-      const data = await response.json();
+      const data = await getPlatformEventById(Number(params.event_id));
       console.log(data);
       setEvent(data);
     } catch (error) {
       console.error("Error fetching event: ", error);
     }
+  };
+
+  const formatModality = (modality: string, address: string) => {
+    if (modality == "InPerson") {
+      return "Presencial - " + address;
+    }
+    return "Online";
   };
 
   useEffect(() => {
@@ -57,14 +64,29 @@ export default function Page({ params }: { params: { event_id: string } }) {
     );
   }
 
+  const handleCopyToClipboard = () => {
+    const currentUrl = window.location.href;
+
+    const modifiedUrl = currentUrl.replace("/register", "");
+
+    navigator.clipboard
+      .writeText(modifiedUrl)
+      .then(() => {
+        toast.success("URL copiada al portapapeles!");
+      })
+      .catch((err) => {
+        console.error("Error copying to clipboard:", err);
+      });
+  };
+
   return (
     <main className="pt-12 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="mx-auto text-center max-w-[400px] px-4 mt-16">
+      <h1 className="text-lg mx-auto text-center max-w-[400px] px-4 mt-16">
         Se ha registrado al evento exitosamente
       </h1>
-      <div className="flex-grow flex flex-col justify-center items-center pb-24">
+      <div className="flex-grow flex flex-col justify-center items-center pb-32">
         <div className="bg-cas-gray-light p-10 sm:px-20 sm:py-12 flex flex-col rounded shadow-cas-gray-light drop-shadow max-w-[85%] lg:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[65%] my-10">
-          <h1 className="mb-4">{event.eventTitle}</h1>
+          <h1 className="mb-4 mx-auto">{event.eventTitle}</h1>
           <div className="flex flex-row  mt-4">
             <FontAwesomeIcon
               className="mr-4"
@@ -83,27 +105,26 @@ export default function Page({ params }: { params: { event_id: string } }) {
                   icon={faLocationDot}
                   size="xl"
                 />
-                <p>{formatEventDate(event.eventDateTime).toLowerCase()}</p>
+                <p>{formatEventDate(event.eventDateAndTime).toLowerCase()}</p>
               </div>
             </div>
             <div>
               <h2 className="mt-6">Modalidad</h2>
               <div className="flex flex-row items-center mt-2">
                 <FontAwesomeIcon className="mr-4" icon={faPassport} size="xl" />
-                <p>
-                  {event.modality} - {event.addressEvent}
-                </p>
+                <p>{formatModality(event.modality, event.address)}</p>
               </div>
             </div>
           </div>
           <div className="mx-auto mt-10">
-            <CustomButton>
+            <CustomButton onClick={handleCopyToClipboard}>
               <FontAwesomeIcon className="pr-2" icon={faShareFromSquare} />
               Comparte el evento
             </CustomButton>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }
