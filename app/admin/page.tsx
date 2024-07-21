@@ -6,8 +6,8 @@ import { Formik, Form } from "formik";
 import { FormEntry } from "../components/FormEntry";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import api from "../Interceptors/axiosConfig"; // Importa Axios configurado
 import { setCookieValue } from "../utils/cookies/setCookie"; // Asegúrate de importar correctamente
+import { authenticate } from "../api/security";
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -18,15 +18,11 @@ export default function Page() {
   };
 
   const handleLogin = async (values: any) => {
+    const authRequest = { email: values.email, password: values.password };
     try {
-      const response = await api.post("/Security/Autenticar", {
-        email: values.email,
-        clave: values.password,
-      });
-
-      const data = response.data;
-
-      setCookieValue("idUser", data.idUsuarioAdm);
+      const data = await authenticate(authRequest);
+      console.log(data);
+      setCookieValue("idUser", data.idAdministrator);
       setCookieValue("jwt", data.token);
       setCookieValue("refreshToken", data.refreshToken);
 
