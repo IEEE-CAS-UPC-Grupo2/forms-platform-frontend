@@ -4,9 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { CustomButton } from "./CustomButton";
 import { FormEntry } from "./FormEntry";
-import { institutions } from "@/data/institutions";
+import { studyCenters } from "@/data/studyCenters";
+import { createParticipation } from "../api/participation";
+import { Participation } from "../models/participation";
 
-export const RegisterForm = () => {
+interface RegisterFormProps {
+  idEvent: number;
+}
+
+export const RegisterForm: React.FC<RegisterFormProps> = ({ idEvent }) => {
   return (
     <div className="bg-cas-gray-light rounded-2xl py-4 md:py-8 px-4 md:px-10 my-16 lg:mb-36 mx-auto w-[95%]">
       <div className="flex flex-row items-center mt-2 mb-6">
@@ -17,14 +23,33 @@ export const RegisterForm = () => {
         initialValues={{
           name: "",
           dni: "",
-          institution: "",
+          studyCenter: "",
           email: "",
           ieeeMembershipCode: "",
           career: "",
         }}
-        onSubmit={(values) => {
-          // Handle form submission
-          console.log(values);
+        onSubmit={async (values, { resetForm }) => {
+          const newParticipation: Participation = {
+            idEvent,
+            dni: values.dni,
+            name: values.name,
+            email: values.email,
+            studyCenter: values.studyCenter,
+            career: values.career,
+            hasCertificate: false,
+            hasAttended: false,
+          };
+
+          try {
+            const createdParticipation =
+              await createParticipation(newParticipation);
+            console.log(
+              "Participation created successfully:",
+              createdParticipation,
+            );
+          } catch (error) {
+            console.error("Error creating participation:", error);
+          }
         }}
         validationSchema={eventRegistrationSchema}
       >
@@ -35,9 +60,9 @@ export const RegisterForm = () => {
               <FormEntry title="DNI" name="dni" />
               <FormEntry
                 title="Elige tu Centro de Estudios"
-                name="institution"
+                name="studyCenter"
                 as="select"
-                options={institutions}
+                options={studyCenters}
               />
             </div>
             <div className="lg:pl-6">

@@ -135,7 +135,7 @@ export default function Page({ params }: { params: { event_id: string } }) {
           </div>
         </div>
         <section id="registration">
-          <RegisterForm />
+          <RegisterForm idEvent={Number(params.event_id)} />
         </section>
       </div>
     </main>

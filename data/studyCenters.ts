@@ -1,4 +1,4 @@
-export const institutions = [
+export const studyCenters = [
   "Universidad Peruana de Ciencias Aplicadas",
   "Pontificia Universidad Católica del Perú",
   "Universidad Nacional Mayor de San Marcos",

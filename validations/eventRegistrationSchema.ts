@@ -1,4 +1,4 @@
-import { institutions } from "@/data/institutions";
+import { studyCenters } from "@/data/studyCenters";
 import * as Yup from "yup";
 
 export const eventRegistrationSchema = Yup.object({
@@ -8,7 +8,7 @@ export const eventRegistrationSchema = Yup.object({
     .length(8, "Debe ser 8 carácteres."),
   institution: Yup.string()
     .required("Porfavor seleccione una opción.")
-    .oneOf(institutions, "Seleccione una opción válida."),
+    .oneOf(studyCenters, "Seleccione una opción válida."),
   email: Yup.string()
     .email("Correo electrónico inválido.")
     .required("No se ha ingresado un correo electrónico.")
