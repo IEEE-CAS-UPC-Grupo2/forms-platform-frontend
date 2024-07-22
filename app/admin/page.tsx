@@ -18,10 +18,14 @@ export default function Page() {
   };
 
   const handleLogin = async (values: any) => {
+    console.log(values);
+
     const authRequest = { email: values.email, password: values.password };
     try {
       const data = await authenticate(authRequest);
       console.log(data);
+      console.log(data.idAdministrator);
+
       setCookieValue("idUser", data.idAdministrator);
       setCookieValue("jwt", data.token);
       setCookieValue("refreshToken", data.refreshToken);

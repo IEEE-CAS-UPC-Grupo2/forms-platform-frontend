@@ -5,7 +5,9 @@ const BASE_URL = environment.apiBaseUrl + "/Security";
 
 interface Response<T> {
   result: boolean;
-  value: T;
+  idAdministrator: number;
+  refreshToken: string;
+  token: string;
   msg?: string;
 }
 
@@ -35,10 +37,11 @@ export const authenticate = async (
       `${BASE_URL}/Authenticate`,
       authorizationRequest,
     );
-    console.log(response);
+    console.log(response.data);
 
-    if (response.data.result) {
-      return response.data.value;
+    if (response.data.msg) {
+      console.log(response.request)
+      return response.data;
     } else {
       throw new Error(response.data.msg || "Failed to authenticate");
     }
@@ -58,7 +61,7 @@ export const obtainRefreshToken = async (
     );
 
     if (response.data.result) {
-      return response.data.value;
+      return response.data;
     } else {
       throw new Error(response.data.msg || "Failed to obtain refresh token");
     }

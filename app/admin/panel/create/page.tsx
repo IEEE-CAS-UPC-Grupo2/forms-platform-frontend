@@ -62,7 +62,7 @@ export default function Page() {
                   EventDateAndTime: dayjs(values.EventDateAndTime).format("YYYY/MM/DD HH:mm:ss"),
                   IdAdministrator:IdAdm
                 };
-
+                console.log(jwtCookie," + ",IdAdm)
                 const response = await fetch(environment.apiBaseUrl + "/PlatformEvent/Save", {
                   method: "POST",
                   headers: {
