@@ -44,15 +44,15 @@ Para el frontend de la pagina web se utilizo las siguietne tecnologias:
    ```bash  
    json-server --watch --port 3005  db.json  
    ```  
-##Licencia  
+## Licencia  
   
-##Participantes
+## Participantes
 -
 -
 -
 -
   
-##Contacto  
+## Contacto  
 
 Linkedin: https://www.linkedin.com/company/ieee-cas-upc  
 Instagram: https://www.instagram.com/ieee.cas.upc/  
