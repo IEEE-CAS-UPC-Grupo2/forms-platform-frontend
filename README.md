@@ -51,9 +51,11 @@ Para el frontend de la pagina web se utilizo las siguietne tecnologias:
 -
 -
 -
+  
+##Contacto  
 
-##Contacto
-Linkedin: https://www.linkedin.com/company/ieee-cas-upc
-Instagram: https://www.instagram.com/ieee.cas.upc/
-
-https://linktr.ee/ieee.cas.upc
+Linkedin: https://www.linkedin.com/company/ieee-cas-upc  
+Instagram: https://www.instagram.com/ieee.cas.upc/  
+  
+https://linktr.ee/ieee.cas.upc  
+  
