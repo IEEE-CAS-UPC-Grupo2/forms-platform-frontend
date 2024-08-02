@@ -51,10 +51,10 @@ Copyright (c) 2024 IEEE-CAS-UPC
   
 ## Participantes  
   
--
--
--
--
+- Cristina Lourdes Vidal Falcon
+- Paolo Andre Espejo Macuri
+- Walter Emilio Delgsdo Yucra
+- Eric Fernando Cuevas Rios
   
 ## Contacto  
 
