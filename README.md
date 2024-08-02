@@ -46,7 +46,11 @@ Para el frontend de la pagina web se utilizo las siguietne tecnologias:
    ```  
 ## Licencia  
   
-## Participantes
+MIT License  
+Copyright (c) 2024 IEEE-CAS-UPC  
+  
+## Participantes  
+  
 -
 -
 -
@@ -56,6 +60,5 @@ Para el frontend de la pagina web se utilizo las siguietne tecnologias:
 
 Linkedin: https://www.linkedin.com/company/ieee-cas-upc  
 Instagram: https://www.instagram.com/ieee.cas.upc/  
-  
-https://linktr.ee/ieee.cas.upc  
+Linktr: https://linktr.ee/ieee.cas.upc   
   
