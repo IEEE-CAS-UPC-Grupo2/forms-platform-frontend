@@ -6,7 +6,8 @@ import * as Yup from "yup";
 import { Event } from "../../../models/event";
 import { useState, useEffect } from "react";
 import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
-import { getCookieValue } from '../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
+import { getCookieValue } from '../../../utils/cookies/getCookie';
+import {uploadImage} from "@/app/api/images-api"; // Asegúrate de importar correctamente
 
 export default function Page({
   params,
@@ -14,6 +15,7 @@ export default function Page({
   params: { admin_token: string; event_id: string };
 }) {
   const router = useRouter();
+  const [imageFile, setImageFile] = useState(null);
   const [event, setEvent] = useState<Event | null>(null);
   const [inputValue, setInputValue] = useState(''); // Cadena vacía como valor inicial
   const [initialDate, setInitialDate] = useState('');
@@ -40,9 +42,7 @@ export default function Page({
     InstitutionInCharge: Yup.string().required(function(value) {
       return value ? undefined : "Required";
     }),
-    ImageUrl: Yup.string().url("Must be a valid URL").required(function(value) {
-      return value ? undefined : "Required";
-    }),
+    ImageUrl: Yup.string().url("Must be a valid URL"),
     EventDescription: Yup.string().required(function(value) {
       return value ? undefined : "Required";
     }),
@@ -53,7 +53,7 @@ export default function Page({
       try {
 
         const jwtCookie = getCookieValue('jwt');
-  
+
         const response = await fetch(
           environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`,
           {
@@ -117,19 +117,21 @@ export default function Page({
       // Puedes manejar el caso cuando event o eventDateAndTime no estén disponibles
     }
   }, [event]);
-  
-  
+
+
 
   const updateEvent = async (values: any) => {
     try {
           const jwtCookie = getCookieValue('jwt');
           const jwtidUser = getCookieValue('idUser');
 
+          const imageUrl = await uploadImage(imageFile)
+
       const updatedEvent = {
         idEvent: params.event_id,
         eventTitle: values.EventTitle,
         eventDescription: values.EventDescription,
-        imageUrl: values.ImageUrl,
+        imageUrl: imageUrl,
         modality: values.Modality,
         institutionInCharge: values.InstitutionInCharge,
         vacancy: values.Vacancy,
@@ -305,46 +307,52 @@ export default function Page({
                 </div>
 
                 <div className="flex flex-col pb-4 px-4 rounded w-full">
-                  <label>URL de imagen del evento</label>
-                  <Field
-                    type="text"
-                    name="ImageUrl"
-                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded overflow-x-auto whitespace-nowrap"
-                  />
-                  <ErrorMessage
-                    name="ImageUrl"
-                    component="div"
-                    className="text-red-500 text-sm"
+                  <label>Selecciona una imagen para el evento</label>
+                  <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) => {
+                        const file = event.currentTarget.files[0];
+                        if (file) {
+                          const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
+                          if (fileSizeMB > 30) {
+                            setImageFile(null); // Clear the file
+                          } else {
+                            setImageFile(file);
+                          }
+                        }
+                      }}
+                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
                   />
 
                   <label>Descripción del evento</label>
                   <Field
-                    as="textarea"
-                    name="EventDescription"
-                    rows="5"
-                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                      as="textarea"
+                      name="EventDescription"
+                      rows="5"
+                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
                   />
                   <ErrorMessage
-                    name="EventDescription"
-                    component="div"
-                    className="text-red-500 text-sm"
+                      name="EventDescription"
+                      component="div"
+                      className="text-red-500 text-sm"
                   />
                 </div>
 
                 <div className="flex flex-row justify-center items-center w-full">
                   <button
-                    className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                    onClick={() => {
-                      router.push(`/admin/panel`);
-                    }}
+                      className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                      onClick={() => {
+                        router.push(`/admin/panel`);
+                      }}
                   >
                     Cancelar
                   </button>
 
                   <div className="min-w-8"></div>
                   <button
-                    className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                    type="submit"
+                      className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                      type="submit"
 
                   >
                     Modificar

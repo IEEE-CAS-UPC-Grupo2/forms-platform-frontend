@@ -161,11 +161,16 @@ function Page() {
                       onChange={(event) => {
                         const file = event.currentTarget.files[0];
                         if (file) {
-                          setImageFile(file);
+                          const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
+                          if (fileSizeMB > 30) {
+                            setImageFile(null); // Clear the file
+                          } else {
+                            setImageFile(file);
+                          }
                         }
                       }}
                       className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
-                   />
+                  />
 
                   <label>Descripción del evento</label>
                   <Field as="textarea" name="EventDescription" rows="5"
