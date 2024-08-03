@@ -1,44 +1,49 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
 import environment from '../environments/environments.prod';
+
+// Define una interfaz extendida para AxiosRequestConfig
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 const api = axios.create({
   baseURL: environment.apiBaseUrl,
 });
 
 let isRefreshing = false;
-let failedQueue = [];
+let failedQueue: Array<{ resolve: (token: string) => void; reject: (error: any) => void }> = [];
 
-const processQueue = (error, token = null) => {
+const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach(prom => {
     if (error) {
       prom.reject(error);
     } else {
-      prom.resolve(token);
+      prom.resolve(token as string);
     }
   });
 
   failedQueue = [];
 };
 
-const getTokenExpirationDate = (token) => {
+const getTokenExpirationDate = (token: string): Date | null => {
   const payloadBase64 = token.split('.')[1];
   const decodedJson = atob(payloadBase64);
   const decoded = JSON.parse(decodedJson);
   return decoded.exp ? new Date(decoded.exp * 1000) : null;
 };
 
-const setCookie = (name, value, days) => {
+const setCookie = (name: string, value: string, days: number) => {
   let expires = "";
   if (days) {
     const date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = name + "=" + (encodeURIComponent(value) || "") + expires + "; path=/";
+  document.cookie = `${name}=${encodeURIComponent(value) || ""}${expires}; path=/`;
 };
 
-const getCookie = (name) => {
-  const nameEQ = name + "=";
+const getCookie = (name: string): string | null => {
+  const nameEQ = `${name}=`;
   const ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
@@ -49,7 +54,7 @@ const getCookie = (name) => {
 };
 
 api.interceptors.request.use(
-  async (config) => {
+  async (config: CustomAxiosRequestConfig) => {
     if (config.url === '/Security/Autenticar') {
       console.log("Request to login endpoint, skipping token check.");
       return config;
@@ -59,7 +64,10 @@ api.interceptors.request.use(
     console.log("JWT found in cookies:", jwt);
 
     if (jwt) {
-      config.headers['Authorization'] = `Bearer ${jwt}`;
+      if (!config.headers) {
+        config.headers = {} as AxiosHeaders;  // Asegúrate de inicializar como AxiosHeaders
+      }
+      (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${jwt}`;
       console.log("JWT added to request headers.");
 
       const tokenExpDate = getTokenExpirationDate(jwt);
@@ -67,7 +75,7 @@ api.interceptors.request.use(
       console.log("Token expiration date:", tokenExpDate);
       console.log("Current date:", now);
 
-      if (tokenExpDate && tokenExpDate - now < 1000) { 
+      if (tokenExpDate && tokenExpDate.getTime() - now.getTime() < 1000) { 
         console.log("Token is about to expire.");
 
         if (!isRefreshing) {
@@ -89,7 +97,9 @@ api.interceptors.request.use(
                 setCookie('jwt', newToken, 1);
                 setCookie('refreshToken', newRefreshToken, 7);
                 console.log("New JWT set in cookies:", newToken);
-                config.headers['Authorization'] = `Bearer ${newToken}`;
+                if (config.headers) {
+                  (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${newToken}`;
+                }
                 processQueue(null, newToken);
               } else if (response.status === 400 && response.data.msg === "Token no ha expirado" && response.data.resultado === false) {
                 console.log('Token is still valid, continuing with original request.');
@@ -107,12 +117,14 @@ api.interceptors.request.use(
           }
         }
 
-        const retryOriginalRequest = new Promise((resolve, reject) => {
+        const retryOriginalRequest = new Promise<string>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         });
 
         return retryOriginalRequest.then(token => {
-          config.headers['Authorization'] = `Bearer ${token}`;
+          if (config.headers) {
+            (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${token}`;
+          }
           return config;
         }).catch(err => {
           return Promise.reject(err);
@@ -122,20 +134,20 @@ api.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     console.error("Request error:", error);
     return Promise.reject(error);
   }
 );
 
 api.interceptors.response.use(
-  response => {
+  (response: AxiosResponse) => {
     console.log("Response received:", response);
     return response;
   },
-  async (error) => {
+  async (error: AxiosError) => {
     console.error("Response error:", error);
-    const originalRequest = error.config;
+    const originalRequest = error.config as CustomAxiosRequestConfig;
 
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

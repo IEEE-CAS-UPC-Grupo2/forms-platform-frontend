@@ -7,8 +7,9 @@ import { Event } from "../../../../models/event";
 import dayjs from 'dayjs';
 import environment from './../../../../environments/environments.prod'; // Importa el archivo de configuración
 import { getCookieValue } from '../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
+import withAuth from "../../../../withAuth";
 
-export default function Page({
+function Page({
   params,
 }: {
   params: { admin_token: string; event_id: string };
@@ -56,7 +57,9 @@ export default function Page({
 
 
   if (!event) {
-    return <p>Loading...</p>;
+   // return <p>Loading...</p>;
+   return null;
+
   }
 
   return (
@@ -132,3 +135,6 @@ export default function Page({
     </main>
   );
 }
+
+export default withAuth(Page);
+

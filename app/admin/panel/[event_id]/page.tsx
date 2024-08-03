@@ -15,19 +15,37 @@ export default function Page({
 }) {
   const router = useRouter();
   const [event, setEvent] = useState<Event | null>(null);
+  const [inputValue, setInputValue] = useState(''); // Cadena vacía como valor inicial
+  const [initialDate, setInitialDate] = useState('');
 
   const validationSchema = Yup.object({
-    EventTitle: Yup.string().required("Required"),
+    EventTitle: Yup.string().required(function(value) {
+      return value ? undefined : "Required";
+    }),
     EventDuration: Yup.number()
-      .required("Required")
+      .required(function(value) {
+        return value ? undefined : "Required";
+      })
       .positive("Must be positive")
       .integer("Must be an integer"),
-    Modality: Yup.string().required("Required"),
-    EventDateAndTime: Yup.date().required("Required"),
-    Address: Yup.string().required("Required"),
-    InstitutionInCharge: Yup.string().required("Required"),
-    ImageUrl: Yup.string().url("Must be a valid URL").required("Required"),
-    EventDescription: Yup.string().required("Required"),
+    Modality: Yup.string().required(function(value) {
+      return value ? undefined : "Required";
+    }),
+    EventDateAndTime: Yup.date().required(function(value) {
+      return value ? undefined : "Required";
+    }),
+    Address: Yup.string().required(function(value) {
+      return value ? undefined : "Required";
+    }),
+    InstitutionInCharge: Yup.string().required(function(value) {
+      return value ? undefined : "Required";
+    }),
+    ImageUrl: Yup.string().url("Must be a valid URL").required(function(value) {
+      return value ? undefined : "Required";
+    }),
+    EventDescription: Yup.string().required(function(value) {
+      return value ? undefined : "Required";
+    }),
   });
 
   useEffect(() => {
@@ -35,6 +53,8 @@ export default function Page({
       try {
 
         const jwtCookie = getCookieValue('jwt');
+        console.log(params.event_id);
+        console.log(params.event_id);
 
         const response = await fetch(
           environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`,
@@ -66,9 +86,47 @@ export default function Page({
     fetchEvent();
   }, [params.event_id]);
 
+  useEffect(() => {
+    if (event && event.eventDateAndTime) {
+      try {
+        // Verifica que eventDateAndTime no esté vacío
+        if (typeof event.eventDateAndTime === 'string' && event.eventDateAndTime.trim()) {
+          // Extraer fecha y hora de eventDateAndTime
+          const [datePart, timePart] = event.eventDateAndTime.split(' ');
+
+          // Verifica que datePart y timePart tengan el formato esperado
+          if (datePart && timePart) {
+            const [year, month, day] = datePart.split('/');
+            const [hour, minute] = timePart.split(':');
+
+            // Verifica que se obtuvieron todos los valores necesarios
+            if (year && month && day && hour && minute) {
+              // Formatear al formato YYYY-MM-DDTHH:MM
+              const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`;
+              setInitialDate(formattedDate);
+            } else {
+              console.error("Error parsing eventDateAndTime: Incomplete date or time parts");
+            }
+          } else {
+          }
+        } else {
+          console.warn("eventDateAndTime is an empty string");
+        }
+      } catch (error) {
+        // Manejar el error, tal vez establecer una fecha predeterminada o dejar en blanco
+      }
+    } else {
+      console.warn("event or eventDateAndTime is undefined or null");
+      // Puedes manejar el caso cuando event o eventDateAndTime no estén disponibles
+    }
+  }, [event]);
+  
+  
+
   const updateEvent = async (values: any) => {
     try {
           const jwtCookie = getCookieValue('jwt');
+          const jwtidUser = getCookieValue('idUser');
 
       const updatedEvent = {
         idEvent: params.event_id,
@@ -82,6 +140,7 @@ export default function Page({
         speaker: values.Speaker,
         eventDateAndTime: values.EventDateAndTime,
         eventDuration: values.EventDuration,
+        idAdministrator:jwtidUser
       };
 
       const response = await fetch(
@@ -117,6 +176,7 @@ export default function Page({
 
         <div className="bg-cas-gray-light sm:p-5 flex flex-col justify-center items-center rounded shadow-cas-gray-light drop-shadow w-2/3 sm:w-3/5">
           <Formik
+          enableReinitialize
             initialValues={{
               idEvent:event?.idEvent || "",
               EventTitle: event?.eventTitle || "",
@@ -144,12 +204,12 @@ export default function Page({
                     <Field
                       type="text"
                       name="EventTitle"
-                      placeholder={event?.eventTitle}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
                       name="EventTitle"
                       component="div"
+                      
                       className="text-red-500 text-sm"
                     />
 
@@ -158,7 +218,6 @@ export default function Page({
                       <Field
                         type="text"
                         name="EventDuration"
-                        placeholder={event?.eventDuration}
                         className="bg-cas-white p-2 my-2 w-full border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                         title="Formato requerido: hh:mm"
                       />
@@ -188,7 +247,6 @@ export default function Page({
                     <Field
                       type="text"
                       name="Speaker"
-                      placeholder={event?.speaker}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
@@ -203,7 +261,6 @@ export default function Page({
                     <Field
                       type="datetime-local"
                       name="EventDateAndTime"
-                      placeholder={event?.eventDateAndTime}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
@@ -218,7 +275,6 @@ export default function Page({
                     <Field
                       type="text"
                       name="InstitutionInCharge"
-                      placeholder={event?.institutionInCharge}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
@@ -231,7 +287,6 @@ export default function Page({
                     <Field
                       type="text"
                       name="Address"
-                      placeholder={event?.address}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
@@ -244,7 +299,6 @@ export default function Page({
                     <Field
                       type="number"
                       name="Vacancy"
-                      placeholder={event?.vacancy}
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
                     <ErrorMessage
@@ -260,7 +314,6 @@ export default function Page({
                   <Field
                     type="text"
                     name="ImageUrl"
-                    placeholder={event?.imageUrl}
                     className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded overflow-x-auto whitespace-nowrap"
                   />
                   <ErrorMessage
@@ -273,7 +326,6 @@ export default function Page({
                   <Field
                     as="textarea"
                     name="EventDescription"
-                    placeholder={event?.eventDescription}
                     rows="5"
                     className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
                   />
@@ -298,7 +350,7 @@ export default function Page({
                   <button
                     className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
                     type="submit"
-                    disabled={isSubmitting}
+
                   >
                     Modificar
                   </button>

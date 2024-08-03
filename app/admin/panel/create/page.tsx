@@ -7,8 +7,9 @@ import * as Yup from "yup";
 import dayjs from "dayjs";
 import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
 import { getCookieValue } from '../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
+import withAuth from "../../../withAuth";
 
-export default function Page() {
+function Page() {
   const router = useRouter(); 
 
   const validationSchema = Yup.object({
@@ -182,3 +183,4 @@ export default function Page() {
     </main>
   );
 }
+export default withAuth(Page);
