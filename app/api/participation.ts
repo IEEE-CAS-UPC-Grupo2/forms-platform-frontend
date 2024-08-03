@@ -20,8 +20,12 @@ export const saveParticipation = async (
       participation,
     );
     if (response.data.status) {
+
+      console.log(response.data.status)
       return response.data.value;
     } else {
+      console.log(response.data.status)
+
       throw new Error(response.data.msg || "Failed to create participation");
     }
   } catch (error) {

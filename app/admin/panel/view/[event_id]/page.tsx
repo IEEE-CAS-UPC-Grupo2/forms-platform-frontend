@@ -34,7 +34,6 @@ function Page({
         }
 
         const data = await response.json();
-        console.log("Response data:", data);
 
         if (data) {
           setEvent(data.value);

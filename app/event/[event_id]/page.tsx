@@ -23,7 +23,6 @@ export default function Page({ params }: { params: { event_id: string } }) {
   const getEvent = async () => {
     try {
       const data = await getPlatformEventById(Number(params.event_id));
-      console.log(data);
       setEvent(data);
     } catch (error) {
       console.error("Error fetching event: ", error);

@@ -88,7 +88,6 @@ export default function Page({ params }: { params: { event_id: string } }) {
               };
               try {
                 const response = await updateAttendance(newAttendance);
-                console.log("Attendance marked successfully:", response);
                 resetForm();
                 toast.success("La asistencia fue marcada exitosamente.", {
                   onClose: () => {

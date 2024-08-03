@@ -17,7 +17,6 @@ export default function Home() {
     const getEvents = async () => {
       try {
         const data = await getPlatformEvents();
-        console.log(data);
         setEvents(data);
       } catch (error) {
         console.error("Error fetching events: ", error);

@@ -53,9 +53,7 @@ export default function Page({
       try {
 
         const jwtCookie = getCookieValue('jwt');
-        console.log(params.event_id);
-        console.log(params.event_id);
-
+  
         const response = await fetch(
           environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`,
           {
@@ -71,7 +69,6 @@ export default function Page({
         }
 
         const data = await response.json();
-        console.log("Response data:", data); // Registro de los datos recibidos
 
         if (data) {
           setEvent(data.value); // Actualiza el estado con los datos del evento obtenidos
@@ -155,7 +152,6 @@ export default function Page({
           body: JSON.stringify(updatedEvent),
         }
       );
-      console.log("entra2");
 
       if (!response.ok) {
         throw new Error("Failed to update event");
@@ -192,7 +188,6 @@ export default function Page({
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
-              console.log(values);
               updateEvent(values);
             }}
           >

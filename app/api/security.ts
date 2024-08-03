@@ -37,10 +37,8 @@ export const authenticate = async (
       `${BASE_URL}/Authenticate`,
       authorizationRequest,
     );
-    console.log(response.data);
 
     if (response.data.msg) {
-      console.log(response.request)
       return response.data;
     } else {
       throw new Error(response.data.msg || "Failed to authenticate");

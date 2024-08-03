@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
-import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
-import withAuth from "../../../withAuth";
+import environment from './../../../environments/environments.prod'; 
 import { getCookieValue } from '../../../utils/cookies/getCookie';
+import withAuth from "../../../withAuth";
 import {uploadImage} from "@/app/api/images-api";
 import {useState} from "react"; // Asegúrate de importar correctamente
 
@@ -22,7 +22,7 @@ function Page() {
     EventDateAndTime: Yup.date().required("Required"),
     Address: Yup.string().required("Required"),
     InstitutionInCharge: Yup.string().required("Required"),
-    ImageUrl: Yup.string().url("Must be a valid URL").required("Required"),
+    ImageUrl: Yup.string().url("Must be a valid URL"),
     EventDescription: Yup.string().required("Required"),
     Vacancy: Yup.number().required("Required").positive("Must be positive").integer("Must be an integer"),
     Speaker: Yup.string().required("Required"),
@@ -69,7 +69,6 @@ function Page() {
                   IdAdministrator:IdAdm,
                   ImageUrl: imageUrl,
                 };
-                console.log(jwtCookie," + ",IdAdm)
                 const response = await fetch(environment.apiBaseUrl + "/PlatformEvent/Save", {
                   method: "POST",
                   headers: {
@@ -84,7 +83,6 @@ function Page() {
                 }
 
                 const data = await response.json();
-                console.log("Event created:", data);
                 router.push(`/admin/panel`);
               } catch (error) {
                 console.error("Error creating event:", error);
@@ -167,7 +165,7 @@ function Page() {
                         }
                       }}
                       className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
-                  />
+                   />
 
                   <label>Descripción del evento</label>
                   <Field as="textarea" name="EventDescription" rows="5"

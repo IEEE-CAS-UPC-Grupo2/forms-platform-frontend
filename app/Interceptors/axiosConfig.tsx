@@ -56,33 +56,26 @@ const getCookie = (name: string): string | null => {
 api.interceptors.request.use(
   async (config: CustomAxiosRequestConfig) => {
     if (config.url === '/Security/Autenticar') {
-      console.log("Request to login endpoint, skipping token check.");
       return config;
     }
 
     const jwt = getCookie('jwt');
-    console.log("JWT found in cookies:", jwt);
 
     if (jwt) {
       if (!config.headers) {
         config.headers = {} as AxiosHeaders;  // Asegúrate de inicializar como AxiosHeaders
       }
       (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${jwt}`;
-      console.log("JWT added to request headers.");
 
       const tokenExpDate = getTokenExpirationDate(jwt);
       const now = new Date();
-      console.log("Token expiration date:", tokenExpDate);
-      console.log("Current date:", now);
 
       if (tokenExpDate && tokenExpDate.getTime() - now.getTime() < 1000) { 
-        console.log("Token is about to expire.");
 
         if (!isRefreshing) {
           isRefreshing = true;
 
           const refreshToken = getCookie('refreshToken');
-          console.log("Refresh token found in cookies:", refreshToken);
 
           if (refreshToken) {
             try {
@@ -90,22 +83,18 @@ api.interceptors.request.use(
                 tokenExpirado: jwt,
                 refreshToken: refreshToken,
               });
-              console.log("Refresh token response:", response);
 
               if (response.status === 200) {
                 const { token: newToken, refreshToken: newRefreshToken } = response.data;
                 setCookie('jwt', newToken, 1);
                 setCookie('refreshToken', newRefreshToken, 7);
-                console.log("New JWT set in cookies:", newToken);
                 if (config.headers) {
                   (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${newToken}`;
                 }
                 processQueue(null, newToken);
               } else if (response.status === 400 && response.data.msg === "Token no ha expirado" && response.data.resultado === false) {
-                console.log('Token is still valid, continuing with original request.');
                 processQueue(null, jwt);
               } else {
-                console.error('Failed to refresh token:', response.statusText);
                 processQueue(new Error('Failed to refresh token'));
               }
             } catch (error) {
@@ -142,7 +131,6 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log("Response received:", response);
     return response;
   },
   async (error: AxiosError) => {
@@ -153,20 +141,17 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       const refreshToken = getCookie('refreshToken');
-      console.log("Refresh token found in cookies for response error handling:", refreshToken);
 
       if (refreshToken && !isRefreshing) {
         isRefreshing = true;
 
         try {
           const jwt = getCookie('jwt');
-          console.log("JWT found in cookies for response error handling:", jwt);
 
           const response = await axios.post(`${environment.apiBaseUrl}/Security/ObtenerRefreshToken`, {
             tokenExpirado: jwt,
             refreshToken: refreshToken,
           });
-          console.log("Refresh token response for response error handling:", response);
 
           if (response.status === 200) {
             const { token: newToken, refreshToken: newRefreshToken } = response.data;
@@ -176,7 +161,6 @@ api.interceptors.response.use(
             processQueue(null, newToken);
             return api(originalRequest);
           } else if (response.status === 400 && response.data.msg === "Token no ha expirado" && response.data.resultado === false) {
-            console.log('Token is still valid, continuing with original request.');
             processQueue(null, jwt);
             return api(originalRequest);
           } else {

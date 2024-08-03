@@ -28,7 +28,6 @@ export function AdminEventTable({ eventos }: TablaProps) {
         throw new Error('Error al eliminar el evento');
       }
 
-      console.log('Evento eliminado exitosamente');
       // Filtrar el evento eliminado de la lista de eventos
       setEventList(prevEventList => prevEventList.filter(evento => evento.idEvent !== id));
     } catch (error) {
