@@ -1,46 +1,64 @@
-## Aqui va la documentacion
+# Pagina de eventos CAS  
+  
+## Descripción  
+  
+Esta pagina web se utilizara para el registro y gestión de eventos por parte de los  
+administradores, asi como un portal de registro de asistencia a eventos por parte de  
+Personas interesadas en asistir.  
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Características  
+  
+-Brinda información sobre los eventos organizados por la rama CAS de IEEE UPC y permite filtrarlos en la busqueda.  
+-Permite realizar el registro y confirmación de asistencia a estos eventos.  
+-Permite el inicio de sesión de administradores  
+-Permite la registro y edición de la información por parte de los administradores de los eventos.  
+-Permite la eliminación de eventos que no se vayan a llevar a cabo.  
+  
+## Tecnologías Utilizadas  
 
-## Getting Started
+Para el frontend de la pagina web se utilizo las siguietne tecnologias:
 
-First, run the development server:
+-React
+-Framework Next.js
+-Tailwind CSS
+-Lenguaje Typescript
+-Lenguaje Javascript
+-Visual Studio Code
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Instalación y Configuración
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+*Se debe ejecutar el backend de la pagina web al mismo tiempo que el frontend para que opere localmente*
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clona el repositorio localmente:  
+    ```bash  
+    git clone https://github.com/IEEE-CAS-UPC-Grupo2/forms-platform-frontend/tree/develop.git
+    ```  
+2. Navega al directorio del proyecto  
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Instala las dependencias:  
+    ```bash
+    npm install
+    ```  
+4. ejecutar la abse de datos:
+   Debe de ejecutarse en otro puerto que no sea el 3000  
+   ```bash  
+   json-server --watch --port 3005  db.json  
+   ```  
+## Licencia  
+  
+MIT License  
+Copyright (c) 2024 IEEE-CAS-UPC  
+  
+## Participantes  
+  
+- Cristina Lourdes Vidal Falcon
+- Paolo Andre Espejo Macuri
+- Walter Emilio Delgsdo Yucra
+- Eric Fernando Cuevas Rios
+  
+## Contacto  
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Run JSON-Server
-
-Has to be in different port than 3000 or will prompt an error.
-
-```
-json-server --watch --port 3005  db.json
-```
+Linkedin: https://www.linkedin.com/company/ieee-cas-upc  
+Instagram: https://www.instagram.com/ieee.cas.upc/  
+Linktr: https://linktr.ee/ieee.cas.upc   
+  

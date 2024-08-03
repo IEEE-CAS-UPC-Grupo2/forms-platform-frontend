@@ -6,11 +6,14 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
 import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
-import { getCookieValue } from '../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
 import withAuth from "../../../withAuth";
+import { getCookieValue } from '../../../utils/cookies/getCookie';
+import {uploadImage} from "@/app/api/images-api";
+import {useState} from "react"; // Asegúrate de importar correctamente
 
 function Page() {
-  const router = useRouter(); 
+  const router = useRouter();
+  const [imageFile, setImageFile] = useState(null);
 
   const validationSchema = Yup.object({
     EventTitle: Yup.string().required("Required"),
@@ -57,11 +60,14 @@ function Page() {
                 const jwtCookie = getCookieValue('jwt');
                 const IdAdm = getCookieValue('idUser');
 
+                const imageUrl = await uploadImage(imageFile)
+
                 // Formatear EventDateTime antes de enviarlo al servidor
                 const formattedValues = {
                   ...values,
                   EventDateAndTime: dayjs(values.EventDateAndTime).format("YYYY/MM/DD HH:mm:ss"),
-                  IdAdministrator:IdAdm
+                  IdAdministrator:IdAdm,
+                  ImageUrl: imageUrl,
                 };
                 console.log(jwtCookie," + ",IdAdm)
                 const response = await fetch(environment.apiBaseUrl + "/PlatformEvent/Save", {
@@ -150,28 +156,39 @@ function Page() {
                 </div>
 
                 <div className="flex flex-col pb-4 px-4 rounded w-full">
-                  <label>URL de imagen del evento</label>
-                  <Field type="text" name="ImageUrl" 
-                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded overflow-x-auto whitespace-nowrap"
+                  <label>Selecciona una imagen para el evento</label>
+                  <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) => {
+                        const file = event.currentTarget.files[0];
+                        if (file) {
+                          setImageFile(file);
+                        }
+                      }}
+                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
                   />
-                  <ErrorMessage name="ImageUrl" component="div" className="text-red-500 text-sm" />
-                  
+
                   <label>Descripción del evento</label>
                   <Field as="textarea" name="EventDescription" rows="5"
-                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                         className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
                   />
-                  <ErrorMessage name="EventDescription" component="div" className="text-red-500 text-sm" />
+                  <ErrorMessage name="EventDescription" component="div" className="text-red-500 text-sm"/>
                 </div>
 
                 <div className="flex justify-center mt-6">
-                  <button className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                  onClick={() => { router.push(`/admin/panel`);}}>
+                  <button
+                      className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                      onClick={() => {
+                        router.push(`/admin/panel`);
+                      }}>
                     Cancelar
                   </button>
 
                   <div className="p-2 mx-8"></div>
-                  <button className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                  type="submit" disabled={isSubmitting}>
+                  <button
+                      className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                      type="submit" disabled={isSubmitting}>
                     Registrar
                   </button>
                 </div>
