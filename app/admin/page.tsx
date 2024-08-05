@@ -18,7 +18,6 @@ export default function Page() {
   };
 
   const handleLogin = async (values: any) => {
-
     const authRequest = { email: values.email, password: values.password };
     try {
       const data = await authenticate(authRequest);
@@ -28,7 +27,6 @@ export default function Page() {
       setCookieValue("refreshToken", data.refreshToken);
 
       handleCardClick();
-
     } catch (error) {
       console.error("Error authenticating user:", error);
       setErrorMessage("Ocurrió un error. Por favor, inténtelo de nuevo.");

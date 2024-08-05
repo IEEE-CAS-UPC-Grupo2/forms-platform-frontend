@@ -1,30 +1,50 @@
 "use client";
 
-import { CustomButton } from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
-import environment from './../../../environments/environments.prod'; 
-import { getCookieValue } from '../../../utils/cookies/getCookie';
+import environment from "./../../../environments/environments.prod";
+import { getCookieValue } from "../../../utils/cookies/getCookie";
 import withAuth from "../../../withAuth";
-import {uploadImage} from "@/app/api/images-api";
-import {useState} from "react"; // Asegúrate de importar correctamente
+import { uploadImage } from "@/app/api/images-api";
+import { useState, useEffect } from "react";
 
 function Page() {
   const router = useRouter();
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   const validationSchema = Yup.object({
     EventTitle: Yup.string().required("Required"),
-    EventDuration: Yup.number().required("Required").positive("Must be positive").integer("Must be an integer"),
-    Modality: Yup.string().required("Required"),
+    EventDuration: Yup.number()
+      .required("Required")
+      .positive("Must be positive")
+      .integer("Must be an integer"),
+    Modality: Yup.string()
+      .oneOf(["virtual", "presencial"])
+      .required("Required"),
     EventDateAndTime: Yup.date().required("Required"),
-    Address: Yup.string().required("Required"),
+    Address: Yup.string().when("Modality", {
+      is: "presencial",
+      then: (schema) => schema.required("Required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
     InstitutionInCharge: Yup.string().required("Required"),
     ImageUrl: Yup.string().url("Must be a valid URL"),
     EventDescription: Yup.string().required("Required"),
-    Vacancy: Yup.number().required("Required").positive("Must be positive").integer("Must be an integer"),
+    Vacancy: Yup.number()
+      .required("Required")
+      .positive("Must be positive")
+      .integer("Must be an integer"),
     Speaker: Yup.string().required("Required"),
   });
 
@@ -35,12 +55,8 @@ function Page() {
           <h1 className="text-center">Creación de nuevo evento</h1>
         </div>
 
-        <div className="bg-cas-gray-light 
-                sm:p-5 flex flex-col justify-center 
-                items-center rounded shadow-cas-gray-light 
-                drop-shadow w-2/3 sm:w-3/5">
-          
-          <Formik 
+        <div className="bg-cas-gray-light sm:p-5 flex flex-col justify-center items-center rounded shadow-cas-gray-light drop-shadow w-2/3 sm:w-3/5">
+          <Formik
             initialValues={{
               EventTitle: "",
               EventDuration: "",
@@ -48,41 +64,45 @@ function Page() {
               EventDateAndTime: "",
               Address: "",
               InstitutionInCharge: "",
-              ImageUrl:"",
+              ImageUrl: "",
               EventDescription: "",
               Vacancy: "",
               Speaker: "",
-              IdAdministrator:""
+              IdAdministrator: "",
             }}
             validationSchema={validationSchema}
             onSubmit={async (values, { setSubmitting }) => {
               try {
-                const jwtCookie = getCookieValue('jwt');
-                const IdAdm = getCookieValue('idUser');
+                const jwtCookie = getCookieValue("jwt");
+                const IdAdm = getCookieValue("idUser");
 
-                const imageUrl = await uploadImage(imageFile)
+                const imageUrl = imageFile ? await uploadImage(imageFile) : "";
 
-                // Formatear EventDateTime antes de enviarlo al servidor
+                // Format EventDateTime before sending to the server
                 const formattedValues = {
                   ...values,
-                  EventDateAndTime: dayjs(values.EventDateAndTime).format("YYYY/MM/DD HH:mm:ss"),
-                  IdAdministrator:IdAdm,
+                  EventDateAndTime: dayjs(values.EventDateAndTime).format(
+                    "YYYY/MM/DD HH:mm:ss",
+                  ),
+                  IdAdministrator: IdAdm,
                   ImageUrl: imageUrl,
                 };
-                const response = await fetch(environment.apiBaseUrl + "/PlatformEvent/Save", {
-                  method: "POST",
-                  headers: {
-                    "Authorization": `Bearer ${jwtCookie}`,
-                    "Content-Type": "application/json"
+                const response = await fetch(
+                  environment.apiBaseUrl + "/PlatformEvent/Save",
+                  {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${jwtCookie}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formattedValues),
                   },
-                  body: JSON.stringify(formattedValues),
-                });
+                );
 
                 if (!response.ok) {
                   throw new Error("Network response was not ok");
                 }
 
-                const data = await response.json();
                 router.push(`/admin/panel`);
               } catch (error) {
                 console.error("Error creating event:", error);
@@ -91,107 +111,167 @@ function Page() {
               }
             }}
           >
-            {({ isSubmitting, values, setFieldValue }) => (
+            {({ isSubmitting, setFieldValue }) => (
               <Form className="w-full z-10">
                 <div className="flex flex-row justify-center items-center flex-wrap w-full">
                   <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
-
                     <label>Nombre del evento</label>
-                    <Field type="text" name="EventTitle"
+                    <Field
+                      type="text"
+                      name="EventTitle"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="EventTitle" component="div" className="text-red-500 text-sm"/>
+                    <ErrorMessage
+                      name="EventTitle"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
 
                     <label>Duración del evento</label>
-                    <Field type="text" name="EventDuration" placeholder="hh:mm"
+                    <Field
+                      type="text"
+                      name="EventDuration"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="EventDuration" component="div" className="text-red-500 text-sm"/>
+                    <ErrorMessage
+                      name="EventDuration"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
 
                     <label>Modalidad</label>
-                    <Field as="select" name="Modality" 
-                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap">
+                    <Field
+                      as="select"
+                      name="Modality"
+                      className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
+                    >
                       <option value="virtual">Virtual</option>
                       <option value="presencial">Presencial</option>
                     </Field>
-                    <ErrorMessage name="Modality" component="div" className="text-red-500 text-sm"/>
-                    
+                    <ErrorMessage
+                      name="Modality"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
+
                     <label>Ponentes (separar c/u con comas “,” )</label>
-                    <Field type="text" name="Speaker" 
+                    <Field
+                      type="text"
+                      name="Speaker"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="Speaker" component="div" className="text-red-500 text-sm"/>
+                    <ErrorMessage
+                      name="Speaker"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                   </div>
 
                   <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
                     <label>Fecha y Hora de inicio</label>
-                    <Field 
-                      type="datetime-local" 
+                    <Field
+                      type="datetime-local"
                       name="EventDateAndTime"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFieldValue('EventDateAndTime', e.target.value)}
+                      onChange={(e: { target: { value: any } }) =>
+                        setFieldValue("EventDateAndTime", e.target.value)
+                      }
                     />
-                    <ErrorMessage name="EventDateAndTime" component="div" className="text-red-500 text-sm" />
-                    
-                    <label>Instituciones a cargo (separar c/u con comas “,” )</label>
-                    <Field type="text" name="InstitutionInCharge" 
+                    <ErrorMessage
+                      name="EventDateAndTime"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
+
+                    <label>
+                      Instituciones a cargo (separar c/u con comas “,” )
+                    </label>
+                    <Field
+                      type="text"
+                      name="InstitutionInCharge"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="InstitutionInCharge" component="div" className="text-red-500 text-sm" />
-                    
+                    <ErrorMessage
+                      name="InstitutionInCharge"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
+
                     <label>Lugar</label>
-                    <Field type="text" name="Address" 
+                    <Field
+                      type="text"
+                      name="Address"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="Address" component="div" className="text-red-500 text-sm" />
+                    <ErrorMessage
+                      name="Address"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
 
                     <label>Vacantes disponibles</label>
-                    <Field type="number" name="Vacancy" 
+                    <Field
+                      type="number"
+                      name="Vacancy"
                       className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                     />
-                    <ErrorMessage name="Vacancy" component="div" className="text-red-500 text-sm"/>
+                    <ErrorMessage
+                      name="Vacancy"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                   </div>
                 </div>
 
                 <div className="flex flex-col pb-4 px-4 rounded w-full">
                   <label>Selecciona una imagen para el evento</label>
                   <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) => {
-                        const file = event.currentTarget.files[0];
-                        if (file) {
-                          const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
-                          if (fileSizeMB > 30) {
-                            setImageFile(null); // Clear the file
-                          } else {
-                            setImageFile(file);
-                          }
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files?.[0];
+                      if (file) {
+                        const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
+                        if (fileSizeMB > 30) {
+                          setImageFile(null); // Clear the file
+                        } else {
+                          setImageFile(file);
                         }
-                      }}
-                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
+                      }
+                    }}
+                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
                   />
 
                   <label>Descripción del evento</label>
-                  <Field as="textarea" name="EventDescription" rows="5"
-                         className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                  <Field
+                    as="textarea"
+                    name="EventDescription"
+                    rows="5"
+                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
                   />
-                  <ErrorMessage name="EventDescription" component="div" className="text-red-500 text-sm"/>
+                  <ErrorMessage
+                    name="EventDescription"
+                    component="div"
+                    className="text-red-500 text-sm"
+                  />
                 </div>
 
                 <div className="flex justify-center mt-6">
                   <button
-                      className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                      onClick={() => {
-                        router.push(`/admin/panel`);
-                      }}>
+                    className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                    onClick={() => {
+                      router.push(`/admin/panel`);
+                    }}
+                  >
                     Cancelar
                   </button>
 
                   <div className="p-2 mx-8"></div>
                   <button
-                      className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                      type="submit" disabled={isSubmitting}>
+                    className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
                     Registrar
                   </button>
                 </div>

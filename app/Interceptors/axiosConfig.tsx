@@ -1,5 +1,11 @@
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
-import environment from '../environments/environments.prod';
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+  InternalAxiosRequestConfig,
+  AxiosHeaders,
+} from "axios";
+import environment from "../environments/environments.prod";
 
 // Define una interfaz extendida para AxiosRequestConfig
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -11,10 +17,13 @@ const api = axios.create({
 });
 
 let isRefreshing = false;
-let failedQueue: Array<{ resolve: (token: string) => void; reject: (error: any) => void }> = [];
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: any) => void;
+}> = [];
 
 const processQueue = (error: any, token: string | null = null) => {
-  failedQueue.forEach(prom => {
+  failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
     } else {
@@ -26,7 +35,7 @@ const processQueue = (error: any, token: string | null = null) => {
 };
 
 const getTokenExpirationDate = (token: string): Date | null => {
-  const payloadBase64 = token.split('.')[1];
+  const payloadBase64 = token.split(".")[1];
   const decodedJson = atob(payloadBase64);
   const decoded = JSON.parse(decodedJson);
   return decoded.exp ? new Date(decoded.exp * 1000) : null;
@@ -36,69 +45,81 @@ const setCookie = (name: string, value: string, days: number) => {
   let expires = "";
   if (days) {
     const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = `${name}=${encodeURIComponent(value) || ""}${expires}; path=/`;
+  document.cookie = `${name}=${
+    encodeURIComponent(value) || ""
+  }${expires}; path=/`;
 };
 
 const getCookie = (name: string): string | null => {
   const nameEQ = `${name}=`;
-  const ca = document.cookie.split(';');
+  const ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    while (c.charAt(0) === " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0)
+      return decodeURIComponent(c.substring(nameEQ.length, c.length));
   }
   return null;
 };
 
 api.interceptors.request.use(
   async (config: CustomAxiosRequestConfig) => {
-    if (config.url === '/Security/Autenticar') {
+    if (config.url === "/Security/Autenticar") {
       return config;
     }
 
-    const jwt = getCookie('jwt');
+    const jwt = getCookie("jwt");
 
     if (jwt) {
       if (!config.headers) {
-        config.headers = {} as AxiosHeaders;  // Asegúrate de inicializar como AxiosHeaders
+        config.headers = {} as AxiosHeaders; // Asegúrate de inicializar como AxiosHeaders
       }
-      (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${jwt}`;
+      (config.headers as AxiosHeaders)["Authorization"] = `Bearer ${jwt}`;
 
       const tokenExpDate = getTokenExpirationDate(jwt);
       const now = new Date();
 
-      if (tokenExpDate && tokenExpDate.getTime() - now.getTime() < 1000) { 
-
+      if (tokenExpDate && tokenExpDate.getTime() - now.getTime() < 1000) {
         if (!isRefreshing) {
           isRefreshing = true;
 
-          const refreshToken = getCookie('refreshToken');
+          const refreshToken = getCookie("refreshToken");
 
           if (refreshToken) {
             try {
-              const response = await axios.post(`${environment.apiBaseUrl}/Security/ObtenerRefreshToken`, {
-                tokenExpirado: jwt,
-                refreshToken: refreshToken,
-              });
+              const response = await axios.post(
+                `${environment.apiBaseUrl}/Security/ObtenerRefreshToken`,
+                {
+                  tokenExpirado: jwt,
+                  refreshToken: refreshToken,
+                },
+              );
 
               if (response.status === 200) {
-                const { token: newToken, refreshToken: newRefreshToken } = response.data;
-                setCookie('jwt', newToken, 1);
-                setCookie('refreshToken', newRefreshToken, 7);
+                const { token: newToken, refreshToken: newRefreshToken } =
+                  response.data;
+                setCookie("jwt", newToken, 1);
+                setCookie("refreshToken", newRefreshToken, 7);
                 if (config.headers) {
-                  (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${newToken}`;
+                  (config.headers as AxiosHeaders)[
+                    "Authorization"
+                  ] = `Bearer ${newToken}`;
                 }
                 processQueue(null, newToken);
-              } else if (response.status === 400 && response.data.msg === "Token no ha expirado" && response.data.resultado === false) {
+              } else if (
+                response.status === 400 &&
+                response.data.msg === "Token no ha expirado" &&
+                response.data.resultado === false
+              ) {
                 processQueue(null, jwt);
               } else {
-                processQueue(new Error('Failed to refresh token'));
+                processQueue(new Error("Failed to refresh token"));
               }
             } catch (error) {
-              console.error('Error refreshing token:', error);
+              console.error("Error refreshing token:", error);
               processQueue(error, null);
             } finally {
               isRefreshing = false;
@@ -110,14 +131,18 @@ api.interceptors.request.use(
           failedQueue.push({ resolve, reject });
         });
 
-        return retryOriginalRequest.then(token => {
-          if (config.headers) {
-            (config.headers as AxiosHeaders)['Authorization'] = `Bearer ${token}`;
-          }
-          return config;
-        }).catch(err => {
-          return Promise.reject(err);
-        });
+        return retryOriginalRequest
+          .then((token) => {
+            if (config.headers) {
+              (config.headers as AxiosHeaders)[
+                "Authorization"
+              ] = `Bearer ${token}`;
+            }
+            return config;
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
       }
     }
 
@@ -126,7 +151,7 @@ api.interceptors.request.use(
   (error: AxiosError) => {
     console.error("Request error:", error);
     return Promise.reject(error);
-  }
+  },
 );
 
 api.interceptors.response.use(
@@ -137,38 +162,52 @@ api.interceptors.response.use(
     console.error("Response error:", error);
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
-      const refreshToken = getCookie('refreshToken');
+      const refreshToken = getCookie("refreshToken");
 
       if (refreshToken && !isRefreshing) {
         isRefreshing = true;
 
         try {
-          const jwt = getCookie('jwt');
+          const jwt = getCookie("jwt");
 
-          const response = await axios.post(`${environment.apiBaseUrl}/Security/ObtenerRefreshToken`, {
-            tokenExpirado: jwt,
-            refreshToken: refreshToken,
-          });
+          const response = await axios.post(
+            `${environment.apiBaseUrl}/Security/ObtenerRefreshToken`,
+            {
+              tokenExpirado: jwt,
+              refreshToken: refreshToken,
+            },
+          );
 
           if (response.status === 200) {
-            const { token: newToken, refreshToken: newRefreshToken } = response.data;
-            setCookie('jwt', newToken, 1);
-            setCookie('refreshToken', newRefreshToken, 7); // Asumiendo 7 días de validez para el refresh token
-            axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+            const { token: newToken, refreshToken: newRefreshToken } =
+              response.data;
+            setCookie("jwt", newToken, 1);
+            setCookie("refreshToken", newRefreshToken, 7); // Asumiendo 7 días de validez para el refresh token
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${newToken}`;
             processQueue(null, newToken);
             return api(originalRequest);
-          } else if (response.status === 400 && response.data.msg === "Token no ha expirado" && response.data.resultado === false) {
+          } else if (
+            response.status === 400 &&
+            response.data.msg === "Token no ha expirado" &&
+            response.data.resultado === false
+          ) {
             processQueue(null, jwt);
             return api(originalRequest);
           } else {
-            console.error('Failed to refresh token:', response.statusText);
-            processQueue(new Error('Failed to refresh token'));
+            console.error("Failed to refresh token:", response.statusText);
+            processQueue(new Error("Failed to refresh token"));
           }
         } catch (error) {
-          console.error('Error refreshing token:', error);
+          console.error("Error refreshing token:", error);
           processQueue(error, null);
         } finally {
           isRefreshing = false;
@@ -179,7 +218,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
