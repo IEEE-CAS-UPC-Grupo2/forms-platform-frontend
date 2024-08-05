@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import environment from './../../../../environments/environments.prod'; // Importa el archivo de configuración
 import { getCookieValue } from '../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
 import withAuth from "../../../../withAuth";
+import api from '../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
 
 function Page({
   params,
@@ -20,25 +21,18 @@ function Page({
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        
         const jwtCookie = getCookieValue('jwt');
-        const response = await fetch(environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`, {
+        const response = await api.get(`/PlatformEvent/${params.event_id}`, {
           headers: {
             "Authorization": `Bearer ${jwtCookie}`,
             "Content-Type": "application/json"
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-
-        if (data) {
-          setEvent(data.value);
+        if (response.status === 200) {
+          setEvent(response.data.value);
         } else {
-          throw new Error("No data received");
+          throw new Error("Network response was not ok");
         }
       } catch (error) {
         console.error("Error fetching event:", error);
@@ -48,17 +42,13 @@ function Page({
     fetchEvent();
   }, [params.event_id]);
 
-
   const formatEventDateTime = (dateTime: string): string => {
     const date = dayjs(dateTime);
     return date.format('YYYY/MM/DD HH:mm:ss');
   };
 
-
   if (!event) {
-   // return <p>Loading...</p>;
-   return null;
-
+    return null;
   }
 
   return (
@@ -136,4 +126,3 @@ function Page({
 }
 
 export default withAuth(Page);
-

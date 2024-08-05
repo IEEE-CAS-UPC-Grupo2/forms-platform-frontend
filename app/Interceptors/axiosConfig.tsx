@@ -7,7 +7,8 @@ import axios, {
 } from "axios";
 import environment from "../environments/environments.prod";
 
-// Define una interfaz extendida para AxiosRequestConfig
+
+
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
@@ -89,11 +90,13 @@ api.interceptors.request.use(
           const refreshToken = getCookie("refreshToken");
 
           if (refreshToken) {
+           
+
             try {
               const response = await axios.post(
-                `${environment.apiBaseUrl}/Security/ObtenerRefreshToken`,
+                `${environment.apiBaseUrl}/Security/ObtainRefreshToken`,
                 {
-                  tokenExpirado: jwt,
+                  expiredToken: jwt,
                   refreshToken: refreshToken,
                 },
               );
@@ -178,9 +181,9 @@ api.interceptors.response.use(
           const jwt = getCookie("jwt");
 
           const response = await axios.post(
-            `${environment.apiBaseUrl}/Security/ObtenerRefreshToken`,
+            `${environment.apiBaseUrl}/Security/ObtainRefreshToken`,
             {
-              tokenExpirado: jwt,
+              expiredToken: jwt,
               refreshToken: refreshToken,
             },
           );

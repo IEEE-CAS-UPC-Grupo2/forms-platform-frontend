@@ -9,6 +9,7 @@ import { getCookieValue } from "../../../utils/cookies/getCookie";
 import withAuth from "../../../withAuth";
 import { uploadImage } from "@/app/api/images-api";
 import { useState, useEffect } from "react";
+import api from '../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
 
 function Page() {
   const router = useRouter();
@@ -87,19 +88,15 @@ function Page() {
                   IdAdministrator: IdAdm,
                   ImageUrl: imageUrl,
                 };
-                const response = await fetch(
-                  environment.apiBaseUrl + "/PlatformEvent/Save",
-                  {
-                    method: "POST",
-                    headers: {
-                      Authorization: `Bearer ${jwtCookie}`,
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formattedValues),
-                  },
-                );
 
-                if (!response.ok) {
+                const response = await api.post("/PlatformEvent/Save", formattedValues, {
+                  headers: {
+                    Authorization: `Bearer ${jwtCookie}`,
+                    "Content-Type": "application/json",
+                  },
+                });
+
+                if (response.status !== 200) {
                   throw new Error("Network response was not ok");
                 }
 
@@ -255,7 +252,6 @@ function Page() {
                     className="text-red-500 text-sm"
                   />
                 </div>
-
                 <div className="flex justify-center mt-6">
                   <button
                     className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"

@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
 import { getCookieValue } from '../../../utils/cookies/getCookie';
 import {uploadImage} from "@/app/api/images-api"; // Asegúrate de importar correctamente
+import api from '../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
 
 export default function Page({
   params,
@@ -15,7 +16,7 @@ export default function Page({
   params: { admin_token: string; event_id: string };
 }) {
   const router = useRouter();
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [event, setEvent] = useState<Event | null>(null);
   const [inputValue, setInputValue] = useState(''); // Cadena vacía como valor inicial
   const [initialDate, setInitialDate] = useState('');
@@ -51,27 +52,10 @@ export default function Page({
   useEffect(() => {
     const fetchEvent = async () => {
       try {
+        const response = await api.get(`/PlatformEvent/${params.event_id}`);
 
-        const jwtCookie = getCookieValue('jwt');
-
-        const response = await fetch(
-          environment.apiBaseUrl+`/PlatformEvent/${params.event_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${jwtCookie}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-
-        if (data) {
-          setEvent(data.value); // Actualiza el estado con los datos del evento obtenidos
+        if (response.status === 200) {
+          setEvent(response.data.value); // Actualiza el estado con los datos del evento obtenidos
         } else {
           throw new Error("No data received");
         }
@@ -125,7 +109,7 @@ export default function Page({
           const jwtCookie = getCookieValue('jwt');
           const jwtidUser = getCookieValue('idUser');
 
-          const imageUrl = await uploadImage(imageFile)
+          const imageUrl = imageFile ? await uploadImage(imageFile) : "";
 
       const updatedEvent = {
         idEvent: params.event_id,
@@ -309,21 +293,22 @@ export default function Page({
                 <div className="flex flex-col pb-4 px-4 rounded w-full">
                   <label>Selecciona una imagen para el evento</label>
                   <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(event) => {
-                        const file = event.currentTarget.files[0];
-                        if (file) {
-                          const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
-                          if (fileSizeMB > 30) {
-                            setImageFile(null); // Clear the file
-                          } else {
-                            setImageFile(file);
-                          }
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files?.[0];
+                      if (file) {
+                        const fileSizeMB = file.size / (1024 * 1024); // Convert bytes to MB
+                        if (fileSizeMB > 30) {
+                          setImageFile(null); // Clear the file
+                        } else {
+                          setImageFile(file);
                         }
-                      }}
-                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
+                      }
+                    }}
+                    className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
                   />
+
 
                   <label>Descripción del evento</label>
                   <Field
