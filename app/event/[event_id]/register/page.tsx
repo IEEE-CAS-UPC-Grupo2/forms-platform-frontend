@@ -15,7 +15,7 @@ import { getPlatformEventById } from "@/app/api/platform-event";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Page({ params }: { params: { event_id: string } }) {
+const Page = ({ params }: { params: { event_id: string } }) => {
   const [event, setEvent] = useState<Event>();
 
   const getEvent = async () => {
@@ -110,7 +110,11 @@ export default function Page({ params }: { params: { event_id: string } }) {
             <div>
               <h2 className="mt-6">Modalidad</h2>
               <div className="flex flex-row items-center mt-2">
-                <FontAwesomeIcon className="mr-4" icon={faPassport} size="xl" />
+                <FontAwesomeIcon
+                  className="mr-4"
+                  icon={faPassport}
+                  size="xl"
+                />
                 <p>{formatModality(event.modality, event.address)}</p>
               </div>
             </div>
@@ -126,4 +130,9 @@ export default function Page({ params }: { params: { event_id: string } }) {
       <ToastContainer />
     </main>
   );
-}
+};
+
+// Definición del display name para facilitar la depuración
+Page.displayName = 'EventPage';
+
+export default Page;
