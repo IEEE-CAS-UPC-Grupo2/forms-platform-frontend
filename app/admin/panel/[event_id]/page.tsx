@@ -9,8 +9,9 @@ import environment from './../../../environments/environments.prod'; // Importa 
 import { getCookieValue } from '../../../utils/cookies/getCookie';
 import {uploadImage} from "@/app/api/images-api"; // Asegúrate de importar correctamente
 import api from '../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import withAuth from "../../../withAuth";
 
-export default function Page({
+function Page({
   params,
 }: {
   params: { admin_token: string; event_id: string };
@@ -351,3 +352,7 @@ export default function Page({
     </main>
   );
 }
+
+Page.displayName = 'EventEditPage';
+
+export default withAuth(Page);
