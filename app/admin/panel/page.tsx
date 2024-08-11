@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { AdminEventTable } from "@/app/components/AdminEventTable";
 import { Event } from "@/app/models/event";
 import { getPlatformEvents } from "@/app/api/platform-event";
@@ -9,47 +9,35 @@ import withAuth from "../../withAuth";
 function Page() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchEvents = useCallback(async () => {
-    try {
-      const data = await getPlatformEvents();
-      if (Array.isArray(data)) {
-        const uniqueEvents = Array.from(
-          new Map(data.map(event => [event.idEvent, event])).values()
-        );
-        setEvents(uniqueEvents);
-      } else {
-        throw new Error("Unexpected response format");
-      }
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      setError("Error fetching events. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const data = await getPlatformEvents();
+        if (Array.isArray(data)) {
+          const uniqueEvents = Array.from(
+            new Map(data.map(event => [event.idEvent, event])).values()
+          );
+          setEvents(uniqueEvents);
+        } else {
+          console.error("Unexpected response format");
+        }
+      } catch (error) {
+        console.error("Error fetching events: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchEvents();
-  }, [fetchEvents]);
+  }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
+    return null;  //  return <p>Loanding....</p>
   }
 
   const sortedEvents = events.slice().sort(
-    (a, b) =>
-      new Date(a.eventDateAndTime).getTime() -
-      new Date(b.eventDateAndTime).getTime()
+    (a, b) => new Date(a.eventDateAndTime).getTime() - new Date(b.eventDateAndTime).getTime()
   );
 
   return (

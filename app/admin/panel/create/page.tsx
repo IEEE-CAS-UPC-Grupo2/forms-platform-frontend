@@ -279,7 +279,4 @@ function Page() {
     </main>
   );
 }
-
-// Definición del display name para facilitar la depuración
-Page.displayName = 'CreateEvent';
 export default withAuth(Page);

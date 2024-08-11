@@ -1,32 +1,32 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Event } from "./models/event";
 import { EventCard } from "./components/EventCard";
 import { SearchBar } from "./components/SearchBar";
 import { formatEventDate } from "./utils/formatDate";
 import { Navbar } from "./components/Navbar";
 import { getPlatformEvents } from "./api/platform-event";
-import Image from "next/image";
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchEvents = useCallback(async () => {
-    try {
-      const data = await getPlatformEvents();
-      setEvents(data);
-    } catch (error) {
-      console.error("Error fetching events: ", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
+    const getEvents = async () => {
+      try {
+        const data = await getPlatformEvents();
+        setEvents(data);
+      } catch (error) {
+        console.error("Error fetching events: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getEvents();
+  }, []);
 
   const today = new Date();
 

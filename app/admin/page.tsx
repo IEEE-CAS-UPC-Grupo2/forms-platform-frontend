@@ -4,7 +4,7 @@ import { adminSchema } from "@/validations/adminSchema";
 import { CustomButton } from "../components/CustomButton";
 import { Formik, Form } from "formik";
 import { FormEntry } from "../components/FormEntry";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookieValue } from "../utils/cookies/setCookie"; // Asegúrate de importar correctamente
 import { authenticate } from "../api/security";
@@ -13,11 +13,11 @@ export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const handleCardClick = useCallback(() => {
-    router.push("admin/panel/");
-  }, [router]);
+  const handleCardClick = () => {
+    router.push(`admin/panel/`);
+  };
 
-  const handleLogin = useCallback(async (values: { email: string; password: string }) => {
+  const handleLogin = async (values: any) => {
     const authRequest = { email: values.email, password: values.password };
     try {
       const data = await authenticate(authRequest);
@@ -31,7 +31,7 @@ export default function Page() {
       console.error("Error authenticating user:", error);
       setErrorMessage("Ocurrió un error. Por favor, inténtelo de nuevo.");
     }
-  }, [handleCardClick]);
+  };
 
   return (
     <main className="flex flex-col justify-center items-center h-screen">
@@ -48,13 +48,13 @@ export default function Page() {
           >
             <Form>
               <FormEntry
-                title="Correo Electrónico"
-                name="email"
+                title={"Correo Electrónico"}
+                name={"email"}
                 type="email"
               />
               <FormEntry
-                title="Contraseña"
-                name="password"
+                title={"Contraseña"}
+                name={"password"}
                 type="password"
               />
               {errorMessage && (
