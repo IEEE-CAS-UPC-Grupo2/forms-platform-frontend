@@ -62,4 +62,6 @@ function Page() {
   );
 }
 
+// Definición del display name para facilitar la depuración
+Page.displayName = 'EventPanel';
 export default withAuth(Page);
