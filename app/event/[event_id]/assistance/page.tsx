@@ -15,7 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 
-const Page = ({ params }: { params: { event_id: string } }) => {
+export default function Page({ params }: { params: { event_id: string } }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [event, setEvent] = useState<Event>();
   const router = useRouter();
@@ -57,7 +57,6 @@ const Page = ({ params }: { params: { event_id: string } }) => {
       </svg>
     );
   }
-
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
       <h1 className="mx-auto text-center max-w-[200px] sm:max-w-[400px] px-4 mt-12">
@@ -126,9 +125,4 @@ const Page = ({ params }: { params: { event_id: string } }) => {
       <ToastContainer />
     </main>
   );
-};
-
-// Definición del display name para facilitar la depuración
-Page.displayName = 'EventAttendancePage';
-
-export default Page;
+}

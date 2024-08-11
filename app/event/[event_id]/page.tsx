@@ -17,7 +17,7 @@ import { CustomButton } from "@/app/components/CustomButton";
 import { RegisterForm } from "@/app/components/RegisterForm";
 import { getPlatformEventById } from "@/app/api/platform-event";
 
-const Page = ({ params }: { params: { event_id: string } }) => {
+export default function Page({ params }: { params: { event_id: string } }) {
   const [event, setEvent] = useState<Event>();
 
   const getEvent = async () => {
@@ -66,7 +66,7 @@ const Page = ({ params }: { params: { event_id: string } }) => {
   }
 
   const formatModality = (modality: string, address: string) => {
-    if (modality === "InPerson") {
+    if (modality == "InPerson") {
       return "Presencial - " + address;
     }
     return "Online";
@@ -139,9 +139,4 @@ const Page = ({ params }: { params: { event_id: string } }) => {
       </div>
     </main>
   );
-};
-
-// Definición del display name para facilitar la depuración
-Page.displayName = 'EventDetailPage';
-
-export default Page;
+}

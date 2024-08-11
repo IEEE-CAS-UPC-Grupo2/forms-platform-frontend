@@ -8,7 +8,7 @@ import { Navbar } from "./components/Navbar";
 import { getPlatformEvents } from "./api/platform-event";
 import Image from "next/image";
 
-const Home = () => {
+export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -98,9 +98,4 @@ const Home = () => {
       </div>
     </main>
   );
-};
-
-// Definición del display name para facilitar la depuración
-Home.displayName = 'HomePage';
-
-export default Home;
+}
