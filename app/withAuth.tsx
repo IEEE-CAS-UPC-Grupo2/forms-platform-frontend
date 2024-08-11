@@ -22,6 +22,5 @@ const withAuth = (WrappedComponent:any) => {
     return <WrappedComponent {...props} />;
   };
 };
-// Definición del display name para facilitar la depuración
-withAuth.displayName = 'withAuth';
+
 export default withAuth;
