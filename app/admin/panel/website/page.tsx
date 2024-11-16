@@ -1,50 +1,43 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AdminEventTable } from "@/app/components/AdminEventTable";
-import { Event } from "@/app/models/event";
-import { getPlatformEvents } from "@/app/api/platform-event";
+import { AdminSectionTable } from "@/app/components/AdminSectionTable";
 import withAuth from "../../../withAuth";
+import { getSections } from "@/app/api/section";
+import { Section } from "@/app/models";
 
 function Page() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchSections = async () => {
       try {
-        const data = await getPlatformEvents();
+        const data = await getSections();
         if (Array.isArray(data)) {
-          const uniqueEvents = Array.from(
-            new Map(data.map(event => [event.idEvent, event])).values()
-          );
-          setEvents(uniqueEvents);
+          setSections(data);
         } else {
           console.error("Unexpected response format");
         }
       } catch (error) {
-        console.error("Error fetching events: ", error);
+        console.error("Error fetching sections: ", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEvents();
+    fetchSections();
   }, []);
 
   if (loading) {
-    return null;  //  return <p>Loanding....</p>
+    return null;
   }
-
-  const sortedEvents = events.slice().sort(
-    (a, b) => new Date(a.eventDateAndTime).getTime() - new Date(b.eventDateAndTime).getTime()
-  );
 
   return (
     <main className="flex flex-col pt-20 sm:pt-28 items-center min-h-screen mx-4">
       <h1 className="mb-4 text-center">Administración del Sitio Web</h1>
       <div className="w-full max-w-6xl mt-4">
-        <AdminEventTable eventos={sortedEvents} />
+        <AdminSectionTable sections={sections} />
       </div>
     </main>
   );
