@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { getCookieValue } from './utils/cookies/getCookie'; // Ajusta la ruta según tu estructura
+import { ADMIN_ROUTES } from './admin/routes';
 
 const withAuth = (WrappedComponent:any) => {
   return (props:any) => {
@@ -15,7 +16,7 @@ const withAuth = (WrappedComponent:any) => {
     useEffect(() => {
       const jwtCookie = getCookieValue('jwt');
       if (!jwtCookie) {
-        router.replace('/admin'); // Redirige a la página de login si no hay JWT
+        router.replace(ADMIN_ROUTES.LOGIN);
       }
     }, [router]);
 
