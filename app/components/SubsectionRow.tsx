@@ -11,9 +11,9 @@ interface SubsectionProps {
 const SubsectionRow: React.FC<SubsectionProps> = ({ subsection, onEdit }) => {
   return (
     <div className="flex items-center border-b border-cas-gray-light text-sm py-2">
-      <div className="w-1/12 px-6"></div>
+      <div className="w-1/12 px-6 text-center"></div>
       <div className="w-5/12 px-6">{subsection.title}</div>
-      <div className="w-3/12 px-6">{subsection.path}</div>
+      <div className="w-4/12 px-6">{subsection.path}</div>
       <div className="w-3/12 px-6 pr-[2.5rem] text-right ml-auto">
         <button
           onClick={() => onEdit(subsection.id)}

@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Section } from "../models";
 import SectionRow from "./SectionRow";
 import SubsectionTable from "./AdminSubsectionTable";
+import { updateOrderSections } from "../api/section";
 
 interface TablaProps {
   sections: Section[];
 }
 
 export function AdminSectionTable({ sections }: TablaProps) {
-  const [sectionList] = useState<Section[]>(sections);
+  const [sectionList, setSectionList] = useState<Section[]>(sections);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set()
   );
@@ -25,6 +26,32 @@ export function AdminSectionTable({ sections }: TablaProps) {
     });
   };
 
+  const moveSectionUp = async (index: number) => {
+    if (index === 0) return;
+    const newSections = [...sectionList];
+    const [removed] = newSections.splice(index, 1);
+    newSections.splice(index - 1, 0, removed);
+    setSectionList(newSections);
+
+    await updateOrderSections({
+      orderX: index + 1,
+      orderY: index,
+    });
+  };
+
+  const moveSectionDown = async (index: number) => {
+    if (index === sectionList.length - 1) return;
+    const newSections = [...sectionList];
+    const [removed] = newSections.splice(index, 1);
+    newSections.splice(index + 1, 0, removed);
+    setSectionList(newSections);
+
+    await updateOrderSections({
+      orderX: index + 1,
+      orderY: index + 2,
+    });
+  };
+
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between items-center bg-cas-gray-light p-2 py-5 rounded-t-lg">
@@ -38,21 +65,19 @@ export function AdminSectionTable({ sections }: TablaProps) {
           <div className="w-1/12 px-6 py-3 text-center"></div>
           <div className="w-5/12 px-6 py-3">Nombre de la sección</div>
           <div className="w-6/12 px-6 py-3">Ruta</div>
+          <div className="w-1/12 px-2 py-3 pr-[2.4rem] text-right">Ordenar</div>
         </div>
-
-        {sectionList.map((section) => (
-          <div
-            key={section.id}
-            className={`${
-              expandedSections.has(section.id) ? "bg-cas-gray-light" : ""
-            }`}
-          >
+        {sectionList.map((section, index) => (
+          <div key={section.id}>
             <SectionRow
               section={section}
               onToggle={() => toggleSection(section.id)}
               isExpanded={expandedSections.has(section.id)}
+              onMoveUp={() => moveSectionUp(index)}
+              onMoveDown={() => moveSectionDown(index)}
+              index={index}
+              totalSections={sectionList.length}
             />
-
             {expandedSections.has(section.id) &&
               section.subsections?.length > 0 && (
                 <SubsectionTable subsections={section.subsections} />
