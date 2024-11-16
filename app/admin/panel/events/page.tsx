@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AdminEventTable } from "@/app/components/AdminEventTable";
 import { Event } from "@/app/models/event";
 import { getPlatformEvents } from "@/app/api/platform-event";
-import withAuth from "../../withAuth";
+import withAuth from "../../../withAuth";
 
 function Page() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -42,7 +42,7 @@ function Page() {
 
   return (
     <main className="flex flex-col pt-20 sm:pt-28 items-center min-h-screen mx-4">
-      <h1 className="mb-4 text-center">Panel de Administrador</h1>
+      <h1 className="mb-4 text-center">Administración de Eventos</h1>
       <div className="w-full max-w-6xl mt-4">
         <AdminEventTable eventos={sortedEvents} />
       </div>

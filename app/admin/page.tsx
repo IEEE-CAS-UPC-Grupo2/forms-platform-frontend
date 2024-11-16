@@ -8,13 +8,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookieValue } from "../utils/cookies/setCookie"; // Asegúrate de importar correctamente
 import { authenticate } from "../api/security";
+import { ADMIN_ROUTES } from "./routes";
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   const handleCardClick = () => {
-    router.push(`admin/panel/`);
+    router.push(ADMIN_ROUTES.PANEL.EVENTS);
   };
 
   const handleLogin = async (values: any) => {
