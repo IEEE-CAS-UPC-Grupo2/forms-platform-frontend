@@ -7,6 +7,7 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Toaster } from "react-hot-toast";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
@@ -23,6 +24,11 @@ export default function RootLayout({
     <html lang="es">
       <body className={montserrat.className}>
         <div className="h-screen">
+          <Toaster position="bottom-right" reverseOrder={false} toastOptions={{
+            style: {
+              marginBottom: '80px'
+            }
+          }} />
           <div>{children}</div>
           <Footer></Footer>
         </div>

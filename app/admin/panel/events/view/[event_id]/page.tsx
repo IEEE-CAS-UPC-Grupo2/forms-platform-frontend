@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { getCookieValue } from '../../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
 import withAuth from "../../../../../withAuth";
 import api from '../../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
-import { ADMIN_ROUTES } from "@/app/admin/routes";
+import { ADMIN_ROUTES } from "@/app/admin/constants";
 
 function Page({
   params,

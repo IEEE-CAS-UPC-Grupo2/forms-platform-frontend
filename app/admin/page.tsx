@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { setCookieValue } from "../utils/cookies/setCookie"; // Asegúrate de importar correctamente
 import { authenticate } from "../api/security";
-import { ADMIN_ROUTES } from "./routes";
+import { ADMIN_ROUTES } from "./constants";
 
 export default function Page() {
   const [errorMessage, setErrorMessage] = useState("");

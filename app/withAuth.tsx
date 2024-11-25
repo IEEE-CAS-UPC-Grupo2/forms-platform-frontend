@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { getCookieValue } from './utils/cookies/getCookie'; // Ajusta la ruta según tu estructura
-import { ADMIN_ROUTES } from './admin/routes';
+import { ADMIN_ROUTES } from './admin/constants';
 
 const withAuth = (WrappedComponent:any) => {
   return (props:any) => {

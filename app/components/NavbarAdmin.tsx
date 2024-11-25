@@ -4,7 +4,7 @@ import Image from "next/image";
 import { CustomButton } from "../components/CustomButton";
 import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { ADMIN_ROUTES, navOptions } from "../admin/routes";
+import { ADMIN_ROUTES, navOptions } from "../admin/constants";
 
 export const NavbarAdmin = () => {
   const router = useRouter();

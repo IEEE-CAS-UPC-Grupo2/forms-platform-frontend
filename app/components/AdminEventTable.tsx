@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Event } from "../models/event";
 import environment from '../environments/environments.prod'; // Importa el archivo de configuración
 import api from '../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
-import { ADMIN_ROUTES } from "../admin/routes";
+import { ADMIN_ROUTES } from "../admin/constants";
 
 interface TablaProps {
   eventos: Event[];

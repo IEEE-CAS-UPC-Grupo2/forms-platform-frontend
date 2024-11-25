@@ -9,7 +9,7 @@ import environment from './../../../../environments/environments.prod'; // Impor
 import { getCookieValue } from '../../../../utils/cookies/getCookie';
 import {uploadImage} from "@/app/api/images-api"; // Asegúrate de importar correctamente
 import api from '../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
-import { ADMIN_ROUTES } from "@/app/admin/routes";
+import { ADMIN_ROUTES } from "@/app/admin/constants";
 
 export default function Page({
   params,

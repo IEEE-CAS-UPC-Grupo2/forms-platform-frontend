@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
-import { Subsection } from "../models";
+import { SubsectionEmbedded } from "../models";
+import { ADMIN_ROUTES } from "../admin/constants";
 import SubsectionRow from "./SubsectionRow";
-import { ADMIN_ROUTES } from "../admin/routes";
 
 interface SubsectionTableProps {
-  subsections: Subsection[];
+  subsections: SubsectionEmbedded[];
 }
 
 const SubsectionTable: React.FC<SubsectionTableProps> = ({ subsections }) => {

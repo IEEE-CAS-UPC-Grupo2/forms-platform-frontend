@@ -1,6 +1,6 @@
 import axios from 'axios';
 import environment from '../environments/environments.prod';
-import { Section, SectionUpdateOrder } from '../models';
+import { Section, UpdateSectionOrder } from '../models';
 import { getCookieValue } from '../utils/cookies/getCookie';
 
 const BASE_URL = environment.apiBaseUrlWebsite + '/sections';
@@ -31,7 +31,7 @@ export const getSections = async (): Promise<Section[]> => {
     }
 };
 
-export const updateOrderSections = async (data: SectionUpdateOrder): Promise<Section[]> => {
+export const updateOrderSections = async (data: UpdateSectionOrder): Promise<Section[]> => {
     try {
         const response = await axios.patch<Response<Section[]>>(`${BASE_URL}/update-orders`, data, {
           headers: {
