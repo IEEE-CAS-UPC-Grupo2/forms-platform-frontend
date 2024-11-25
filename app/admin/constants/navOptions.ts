@@ -1,10 +1,4 @@
-export const ADMIN_ROUTES = {
-  LOGIN: "/admin",
-  PANEL: {
-    EVENTS: "/admin/panel/events",
-    WEBSITE: "/admin/panel/website",
-  }
-}
+import { ADMIN_ROUTES } from "./routes";
 
 export const navOptions = [
   { label: "Eventos", path: ADMIN_ROUTES.PANEL.EVENTS },

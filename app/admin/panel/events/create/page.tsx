@@ -9,7 +9,7 @@ import withAuth from "../../../../withAuth";
 import { uploadImage } from "@/app/api/images-api";
 import { useState, useEffect } from "react";
 import api from '../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
-import { ADMIN_ROUTES } from "@/app/admin/routes";
+import { ADMIN_ROUTES } from "@/app/admin/constants";
 
 function Page() {
   const router = useRouter();

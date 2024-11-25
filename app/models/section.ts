@@ -1,6 +1,6 @@
-import { Subsection } from "./subsection";
+import { SubsectionEmbedded } from "./subsection";
 
-export interface SectionUpdateOrder {
+export interface UpdateSectionOrder {
   orderX: number;
   orderY: number;
 }
@@ -12,5 +12,5 @@ export interface Section {
   order: number;
   path: string;
   hasDropdown: boolean;
-  subsections: Subsection[];
+  subsections: SubsectionEmbedded[];
 }
