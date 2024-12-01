@@ -51,7 +51,7 @@ export const FormContactUs = () => {
               {new Date(contact.publishDate).toLocaleString()}
             </div>
             <div className="w-4/12 px-6 py-3">
-              {contact.names + " " + contact.lastNames}
+              {`${contact.names} ${contact.lastNames}`}
             </div>
             <div className="w-5/12 px-6 py-3">{contact.email}</div>
             <div className="w-2/12 px-6 py-3">{contact.cellphone}</div>
