@@ -1,7 +1,12 @@
 import { Subsection, UpdateSubsectionContent } from "../models";
 import * as Yup from "yup";
-import { ErrorMessage, Field, Form, Formik, FormikProps } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import { updateSubsectionById } from "../api/subsection";
+import { uploadImage } from "../api/images-api";
+import Image from "next/image";
+import toast from "react-hot-toast";
+import { MESSAGES } from "../admin/constants";
+import { useRef, useState, useEffect } from "react";
 
 interface FormSubsectionContentProps {
   id: string;
@@ -24,8 +29,30 @@ interface WhoWeAreContent {
   missionVision: MissionVision[];
 }
 
-export const FormWhoWeAre = ({ id, subsection }: FormSubsectionContentProps) => {
-  const whoWeAreContent: WhoWeAreContent = subsection?.content as WhoWeAreContent;
+export const FormWhoWeAre = ({
+  id,
+  subsection,
+}: FormSubsectionContentProps) => {
+  const defaultImage =
+    "https://via.placeholder.com/1920x300?text=Imagen+por+defecto";
+  const whoWeAreContent: WhoWeAreContent =
+    subsection?.content as WhoWeAreContent;
+
+  const [imageFirstFragmentFile, setImageFirstFragmentFile] =
+    useState<File | null>(null);
+  const [previewFirstFragmentUrl, setPreviewFirstFragmentUrl] = useState(
+    whoWeAreContent.aboutIeee[0].image || defaultImage
+  );
+
+  const [imageSecondFragmentFile, setImageSecondFragmentFile] =
+    useState<File | null>(null);
+  const [previewSecondFragmentUrl, setPreviewSecondFragmentUrl] = useState(
+    whoWeAreContent.aboutIeee[1].image || defaultImage
+  );
+
+  const firstFragmentFileInputRef = useRef<HTMLInputElement | null>(null);
+  const secondFragmentFileInputRef = useRef<HTMLInputElement | null>(null);
+
   const initialValues = {
     content: whoWeAreContent,
   };
@@ -49,7 +76,93 @@ export const FormWhoWeAre = ({ id, subsection }: FormSubsectionContentProps) => 
   });
 
   const onSubmit = async (values: UpdateSubsectionContent) => {
+    const content = values.content as WhoWeAreContent;
+
+    const imageFirstFragmentUrl = imageFirstFragmentFile
+      ? await uploadImage(imageFirstFragmentFile)
+      : content.aboutIeee[0].image;
+
+    const imageSecondFragmentUrl = imageSecondFragmentFile
+      ? await uploadImage(imageSecondFragmentFile)
+      : content.aboutIeee[1].image;
+
+    if (imageFirstFragmentUrl) {
+      content.aboutIeee[0].image = imageFirstFragmentUrl;
+    }
+
+    if (imageSecondFragmentUrl) {
+      content.aboutIeee[1].image = imageSecondFragmentUrl;
+    }
+
+    values.content = content;
+
     await updateSubsectionById(id, values);
+
+    if (firstFragmentFileInputRef.current) {
+      firstFragmentFileInputRef.current.files = null;
+      setImageFirstFragmentFile(null);
+    }
+
+    if (secondFragmentFileInputRef.current) {
+      secondFragmentFileInputRef.current.files = null;
+      setImageSecondFragmentFile(null);
+    }
+  };
+
+  const onChangeFirstFragmentImage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.currentTarget.files?.[0];
+    if (file) {
+      const fileSizeMB = file.size / (1024 * 1024);
+      const isWebP = file.type === "image/webp";
+
+      if (!isWebP) {
+        toast.error(MESSAGES.ERROR.IMAGE_NOT_WEBP);
+        return;
+      }
+
+      if (fileSizeMB > 30) {
+        setImageFirstFragmentFile(null);
+        errorOnPreviewFirstFragmentImage();
+      } else {
+        setImageFirstFragmentFile(file);
+        setPreviewFirstFragmentUrl(URL.createObjectURL(file));
+      }
+    }
+  };
+
+  const onChangeSecondFragmentImage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.currentTarget.files?.[0];
+    if (file) {
+      const fileSizeMB = file.size / (1024 * 1024);
+      const isWebP = file.type === "image/webp";
+
+      if (!isWebP) {
+        toast.error(MESSAGES.ERROR.IMAGE_NOT_WEBP);
+        return;
+      }
+
+      if (fileSizeMB > 30) {
+        setImageSecondFragmentFile(null);
+        errorOnPreviewSecondFragmentImage();
+      } else {
+        setImageSecondFragmentFile(file);
+        setPreviewSecondFragmentUrl(URL.createObjectURL(file));
+      }
+    }
+  };
+
+  const errorOnPreviewFirstFragmentImage = () => {
+    toast.error(MESSAGES.ERROR.IMAGE_NOT_UPLOAD);
+    setPreviewFirstFragmentUrl(defaultImage);
+  };
+
+  const errorOnPreviewSecondFragmentImage = () => {
+    toast.error(MESSAGES.ERROR.IMAGE_NOT_UPLOAD);
+    setPreviewSecondFragmentUrl(defaultImage);
   };
 
   return (
@@ -76,7 +189,6 @@ export const FormWhoWeAre = ({ id, subsection }: FormSubsectionContentProps) => 
                     component="div"
                     className="text-red-500"
                   />
-
                   <Field
                     as="textarea"
                     name="content.aboutIeee[0].description"
@@ -88,6 +200,24 @@ export const FormWhoWeAre = ({ id, subsection }: FormSubsectionContentProps) => 
                     component="div"
                     className="text-red-500 text-sm"
                   />
+
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      accept="image/webp"
+                      ref={firstFragmentFileInputRef}
+                      onChange={onChangeFirstFragmentImage}
+                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
+                    />
+                    <Image
+                      src={previewFirstFragmentUrl || defaultImage}
+                      alt="Vista previa de la imagen para el primer fragmento"
+                      className="mt-2"
+                      width={1920}
+                      height={300}
+                      onError={errorOnPreviewFirstFragmentImage}
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col bg-white p-4 rounded max-w-[600px] min-w-[200px] lg:w-1/2 w-full">
@@ -102,7 +232,6 @@ export const FormWhoWeAre = ({ id, subsection }: FormSubsectionContentProps) => 
                     component="div"
                     className="text-red-500"
                   />
-
                   <Field
                     as="textarea"
                     name="content.aboutIeee[1].description"
@@ -114,51 +243,34 @@ export const FormWhoWeAre = ({ id, subsection }: FormSubsectionContentProps) => 
                     component="div"
                     className="text-red-500 text-sm"
                   />
+                  <div className="mt-2">
+                    <input
+                      type="file"
+                      accept="image/webp"
+                      ref={secondFragmentFileInputRef}
+                      onChange={onChangeSecondFragmentImage}
+                      className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
+                    />
+                    <Image
+                      src={previewSecondFragmentUrl || defaultImage}
+                      alt="Vista previa de la imagen para el segundo fragmento"
+                      className="mt-2"
+                      width={1920}
+                      height={300}
+                      onError={errorOnPreviewSecondFragmentImage}
+                    />
+                  </div>
                 </div>
               </div>
-            </section>
-
-            <section>
-              <h2 className="text-xl text-center mb-4 mt-4">Misión y Visión</h2>
-              <div className="flex flex-col pb-4 px-4 rounded w-full">
-                <label>Descripción de la misión</label>
-                <Field
-                  as="textarea"
-                  name="content.missionVision[0].description"
-                  rows="5"
-                  className="bg-cas-white p-2 mt-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
-                />
-                <ErrorMessage
-                  name="content.missionVision[0].description"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
-              </div>
-
-              <div className="flex flex-col pb-4 px-4 rounded w-full">
-                <label>Descripción de la visión</label>
-                <Field
-                  as="textarea"
-                  name="content.missionVision[1].description"
-                  rows="5"
-                  className="bg-cas-white p-2 mt-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
-                />
-                <ErrorMessage
-                  name="content.missionVision[1].description"
-                  component="div"
-                  className="text-red-500 text-sm"
-                />
+              <div className="flex justify-end mr-4">
+                <button
+                  className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                  type="submit"
+                >
+                  Editar
+                </button>
               </div>
             </section>
-
-            <div className="flex justify-end mr-4">
-              <button
-                className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                type="submit"
-              >
-                Editar
-              </button>
-            </div>
           </Form>
         )}
       </Formik>
