@@ -33,10 +33,8 @@ export const FormWhoWeAre = ({
   id,
   subsection,
 }: FormSubsectionContentProps) => {
-  const defaultImage =
-    "https://via.placeholder.com/1920x300?text=Imagen+por+defecto";
-  const whoWeAreContent: WhoWeAreContent =
-    subsection?.content as WhoWeAreContent;
+  const defaultImage = "https://via.placeholder.com/1920x300?text=Imagen+por+defecto";
+  const whoWeAreContent: WhoWeAreContent = subsection?.content as WhoWeAreContent;
 
   const [imageFirstFragmentFile, setImageFirstFragmentFile] =
     useState<File | null>(null);
@@ -262,15 +260,48 @@ export const FormWhoWeAre = ({
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end mr-4">
-                <button
-                  className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
-                  type="submit"
-                >
-                  Editar
-                </button>
+            </section>
+
+            <section>
+              <h2 className="text-xl text-center mb-4 mt-4">Misión y Visión</h2>
+              <div className="flex flex-col pb-4 px-4 rounded w-full">
+                <label>Descripción de la misión</label>
+                <Field
+                  as="textarea"
+                  name="content.missionVision[0].description"
+                  rows="5"
+                  className="bg-cas-white p-2 mt-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                />
+                <ErrorMessage
+                  name="content.missionVision[0].description"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+              <div className="flex flex-col pb-4 px-4 rounded w-full">
+                <label>Descripción de la visión</label>
+                <Field
+                  as="textarea"
+                  name="content.missionVision[1].description"
+                  rows="5"
+                  className="bg-cas-white p-2 mt-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
+                />
+                <ErrorMessage
+                  name="content.missionVision[1].description"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
               </div>
             </section>
+
+            <div className="flex justify-end mr-4">
+              <button
+                className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
+                type="submit"
+              >
+                Guardar cambio
+              </button>
+            </div>
           </Form>
         )}
       </Formik>
