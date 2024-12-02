@@ -171,7 +171,7 @@ export const FormSubsectionHeader = ({
                 className="bg-cas-green py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
                 type="submit"
               >
-                Editar
+                Guardar cambio
               </button>
             </div>
           </Form>

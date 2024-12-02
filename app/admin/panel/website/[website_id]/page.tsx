@@ -19,19 +19,18 @@ function Page({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
+  const fetchSubsectionById = async (id: string) => {
+    try {
+      const data = await getSubsectionById(id);
+      setSubsection(data);
+    } catch (error) {
+      console.error("Error fetching subsections: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSubsectionById = async (id: string) => {
-      try {
-        const data = await getSubsectionById(id);
-        setSubsection(data);
-      } catch (error) {
-        console.error("Error fetching subsections: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchSubsectionById(params.website_id);
   }, [params.website_id]);
 
@@ -64,6 +63,9 @@ function Page({ params }: PageProps) {
           <FormSubsectionContent
             id={params.website_id}
             subsection={subsection}
+            onContentUpdated={() => {
+              fetchSubsectionById(params.website_id);
+            }}
           />
         ) : (
           <p>No se encontró el contenido solicitado.</p>
