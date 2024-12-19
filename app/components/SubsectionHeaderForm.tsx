@@ -8,15 +8,15 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { MESSAGES } from "../admin/constants";
 
-interface FormSubsectionHeaderProps {
+interface SubsectionHeaderFormProps {
   id: string;
   subsection: Subsection | undefined;
 }
 
-export const FormSubsectionHeader = ({
+export const SubsectionHeaderForm = ({
   id,
   subsection,
-}: FormSubsectionHeaderProps) => {
+}: SubsectionHeaderFormProps) => {
   const defaultImage =
     "https://via.placeholder.com/1920x300?text=Imagen+por+defecto";
   const fileInputRef = useRef<HTMLInputElement | null>(null);

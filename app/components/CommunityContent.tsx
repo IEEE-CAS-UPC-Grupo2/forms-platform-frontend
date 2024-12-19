@@ -6,13 +6,14 @@ import { Modal } from "./Modal";
 import { CustomButton } from "./CustomButton";
 import { updateSubsectionById } from "../api/subsection";
 import { AdminCommunityTable } from "./AdminCommunityTable";
+import { showConfirmationAlert } from "../utils/alerts";
 
 const ModalTypes = {
   ADVANTAGE: "advantage",
   BENEFIT: "benefit",
 };
 
-interface FormSubsectionContentProps {
+interface SubsectionContentProps {
   id: string;
   subsection: Subsection | undefined;
   onContentUpdated: () => void;
@@ -30,11 +31,11 @@ interface CommunityContent {
   };
 }
 
-export const FormCommunity = ({
+export const CommunityContent = ({
   id,
   subsection,
   onContentUpdated,
-}: FormSubsectionContentProps) => {
+}: SubsectionContentProps) => {
   const communityContent = subsection?.content as CommunityContent;
   const initialValues = {
     content: communityContent,
@@ -105,6 +106,13 @@ export const FormCommunity = ({
   }
 
   const deleteItem = async (type: string, index: number) => {
+    const confirmed = await showConfirmationAlert(
+      "¿Está seguro de eliminar este elemento?",
+      "Esta acción no se puede deshacer."
+    );
+
+    if (!confirmed) return;
+    
     const contentArray =
       type === ModalTypes.ADVANTAGE
         ? communityContent.advantages.items

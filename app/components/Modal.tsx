@@ -17,7 +17,7 @@ export const Modal = ({ isOpen, onClose, children, title }: ModalProps) => {
       aria-modal="true"
     >
       <div
-        className="bg-cas-white rounded-lg shadow-lg w-11/12 sm:w-1/2 p-4 transition-transform transform scale-95"
+        className="bg-cas-white rounded-lg shadow-lg w-11/12 sm:w-1/2 p-4 transition-transform transform scale-90"
         style={{ animation: "fadeIn 0.3s ease-out" }}
       >
         <div className="flex justify-between items-center border-b pb-2">

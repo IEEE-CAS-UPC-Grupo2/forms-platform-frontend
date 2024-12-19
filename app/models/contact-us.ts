@@ -1,3 +1,5 @@
+import { Pagination } from "./pagination";
+
 export interface ContactUs {
   id: string;
   names: string;
@@ -9,14 +11,7 @@ export interface ContactUs {
   publishDate: string;
 }
 
-export interface Pagination {
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
-export interface ContactUsResponse {
+export interface ContactUsPagination {
   results: ContactUs[];
   pagination: Pagination;
 }

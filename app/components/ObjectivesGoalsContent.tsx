@@ -4,13 +4,14 @@ import { Modal } from "./Modal";
 import { CustomButton } from "./CustomButton";
 import { updateSubsectionById } from "../api/subsection";
 import { AdminObjectiveGoalTable } from "./AdminObjectiveGoalTable";
+import { showConfirmationAlert } from "../utils/alerts";
 
 const ModalTypes = {
   OBJECTIVE: "objective",
   GOAL: "goal",
 };
 
-interface FormSubsectionContentProps {
+interface SubsectionContentProps {
   id: string;
   subsection: Subsection | undefined;
   onContentUpdated: () => void;
@@ -25,11 +26,11 @@ interface ObjectivesGoalsContent {
   goals: { items: Item[] };
 }
 
-export const FormObjectivesGoals = ({
+export const ObjectivesGoalsContent = ({
   id,
   subsection,
   onContentUpdated,
-}: FormSubsectionContentProps) => {
+}: SubsectionContentProps) => {
   const objectivesGoalsContent = subsection?.content as ObjectivesGoalsContent;
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -84,6 +85,13 @@ export const FormObjectivesGoals = ({
   };
 
   const deleteItem = async (type: string, index: number) => {
+    const confirmed = await showConfirmationAlert(
+      "¿Está seguro de eliminar este elemento?",
+      "Esta acción no se puede deshacer."
+    );
+
+    if (!confirmed) return;
+    
     const contentArray =
       type === ModalTypes.OBJECTIVE
         ? objectivesGoalsContent.objectives.items

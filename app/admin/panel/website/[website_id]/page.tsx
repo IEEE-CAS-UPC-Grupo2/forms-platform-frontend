@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { subsectionComponents } from "@/app/admin/constants";
 import { Subsection } from "@/app/models";
 import { getSubsectionById } from "@/app/api/subsection";
-import { FormSubsectionHeader } from "@/app/components/FormSubsectionHeader";
+import { SubsectionHeaderForm } from "@/app/components/SubsectionHeaderForm";
 import withAuth from "@/app/withAuth";
 
 interface PageProps {
@@ -43,7 +43,7 @@ function Page({ params }: PageProps) {
   if (!selectedComponent)
     return <p>No se encontró la subsección solicitada.</p>;
 
-  const FormSubsectionContent = selectedComponent.component;
+  const SubsectionContentForm = selectedComponent.component;
 
   const goToSections = () => router.push(ADMIN_ROUTES.PANEL.WEBSITE);
 
@@ -56,11 +56,11 @@ function Page({ params }: PageProps) {
           </h1>
         </div>
 
-        <FormSubsectionHeader id={params.website_id} subsection={subsection} />
+        <SubsectionHeaderForm id={params.website_id} subsection={subsection} />
         <br />
 
-        {FormSubsectionContent ? (
-          <FormSubsectionContent
+        {SubsectionContentForm ? (
+          <SubsectionContentForm
             id={params.website_id}
             subsection={subsection}
             onContentUpdated={() => {
