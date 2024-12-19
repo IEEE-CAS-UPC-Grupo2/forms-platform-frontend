@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { MESSAGES } from "../admin/constants";
 import { useRef, useState, useEffect } from "react";
 
-interface FormSubsectionContentProps {
+interface SubsectionContentProps {
   id: string;
   subsection: Subsection | undefined;
 }
@@ -29,12 +29,11 @@ interface WhoWeAreContent {
   missionVision: MissionVision[];
 }
 
-export const FormWhoWeAre = ({
-  id,
-  subsection,
-}: FormSubsectionContentProps) => {
-  const defaultImage = "https://via.placeholder.com/1920x300?text=Imagen+por+defecto";
-  const whoWeAreContent: WhoWeAreContent = subsection?.content as WhoWeAreContent;
+export const WhoWeAreForm = ({ id, subsection }: SubsectionContentProps) => {
+  const defaultImage =
+    "https://via.placeholder.com/1920x300?text=Imagen+por+defecto";
+  const whoWeAreContent: WhoWeAreContent =
+    subsection?.content as WhoWeAreContent;
 
   const [imageFirstFragmentFile, setImageFirstFragmentFile] =
     useState<File | null>(null);
@@ -207,14 +206,16 @@ export const FormWhoWeAre = ({
                       onChange={onChangeFirstFragmentImage}
                       className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
                     />
-                    <Image
-                      src={previewFirstFragmentUrl || defaultImage}
-                      alt="Vista previa de la imagen para el primer fragmento"
-                      className="mt-2"
-                      width={1920}
-                      height={300}
-                      onError={errorOnPreviewFirstFragmentImage}
-                    />
+                    <div className="relative w-full h-[300px] overflow-hidden">
+                      <Image
+                        src={previewFirstFragmentUrl || defaultImage}
+                        alt="Vista previa de la imagen para el primer fragmento"
+                        className="mt-2"
+                        width={1920}
+                        height={300}
+                        onError={errorOnPreviewFirstFragmentImage}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -249,14 +250,16 @@ export const FormWhoWeAre = ({
                       onChange={onChangeSecondFragmentImage}
                       className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded w-full"
                     />
-                    <Image
-                      src={previewSecondFragmentUrl || defaultImage}
-                      alt="Vista previa de la imagen para el segundo fragmento"
-                      className="mt-2"
-                      width={1920}
-                      height={300}
-                      onError={errorOnPreviewSecondFragmentImage}
-                    />
+                    <div className="relative w-full h-[300px] overflow-hidden">
+                      <Image
+                        src={previewSecondFragmentUrl || defaultImage}
+                        alt="Vista previa de la imagen para el segundo fragmento"
+                        className="mt-2"
+                        width={1920}
+                        height={300}
+                        onError={errorOnPreviewSecondFragmentImage}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

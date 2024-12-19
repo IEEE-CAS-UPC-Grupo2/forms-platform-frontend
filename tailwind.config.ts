@@ -22,6 +22,7 @@ const config: Config = {
       "cas-gray-light": "#F2F2F2",
       "cas-red": "#C20000",
       "cas-gray-mid": "#979797",
+      "cas-yellow": "#ffd700",
     },
     screens: {
       sm: "640px",
