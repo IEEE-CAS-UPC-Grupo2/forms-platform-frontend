@@ -103,6 +103,7 @@ export const SubsectionHeaderForm = ({
                 <Field
                   type="text"
                   name="title"
+                  maxLength={50}
                   className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
                 />
                 <ErrorMessage
@@ -135,6 +136,7 @@ export const SubsectionHeaderForm = ({
               <Field
                 as="textarea"
                 name="description"
+                maxLength={150}
                 rows="5"
                 className="bg-cas-white p-2 mb-2 border-cas-gray-mid border-[0.5px] rounded break-all"
               />

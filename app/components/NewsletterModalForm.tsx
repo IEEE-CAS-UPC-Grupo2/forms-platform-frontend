@@ -52,7 +52,7 @@ export const NewsletterModalForm = ({
       toast.error("La etiqueta ya fue añadida");
       return;
     }
-    
+
     setLabels((prev) => [...prev, label]);
   };
 
@@ -139,6 +139,7 @@ export const NewsletterModalForm = ({
             <Field
               type="text"
               name="title"
+              maxLength={150}
               className="bg-cas-white p-2 my-2 border-cas-gray-mid border-[0.5px] rounded h-15 overflow-x-auto whitespace-nowrap"
             />
             <ErrorMessage
