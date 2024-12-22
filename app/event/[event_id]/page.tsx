@@ -30,9 +30,11 @@ export default function Page({ params }: { params: { event_id: string } }) {
   };
 
   const scrollToSection = () => {
-    const registrationSection = document.getElementById("registration");
-    if (registrationSection) {
-      registrationSection.scrollIntoView({ behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      const registrationSection = document.getElementById("registration");
+      if (registrationSection) {
+        registrationSection.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
