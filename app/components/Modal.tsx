@@ -30,7 +30,7 @@ export const Modal = ({ isOpen, onClose, children, title }: ModalProps) => {
             ✕
           </button>
         </div>
-        <div className="mt-4">{children}</div>
+        <div className="mt-4 max-h-[90vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );
