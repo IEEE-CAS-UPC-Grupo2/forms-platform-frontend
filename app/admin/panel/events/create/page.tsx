@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import dayjs from "dayjs";
-import environment from "./../../../environments/environments.prod";
-import { getCookieValue } from "../../../utils/cookies/getCookie";
-import withAuth from "../../../withAuth";
+import { getCookieValue } from "../../../../utils/cookies/getCookie";
+import withAuth from "../../../../withAuth";
 import { uploadImage } from "@/app/api/images-api";
 import { useState, useEffect } from "react";
-import api from '../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import api from '../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import { ADMIN_ROUTES } from "@/app/admin/constants";
 
 function Page() {
   const router = useRouter();
@@ -100,7 +100,7 @@ function Page() {
                   throw new Error("Network response was not ok");
                 }
 
-                router.push(`/admin/panel`);
+                router.push(ADMIN_ROUTES.PANEL.EVENTS);
               } catch (error) {
                 console.error("Error creating event:", error);
               } finally {
@@ -256,7 +256,7 @@ function Page() {
                   <button
                     className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
                     onClick={() => {
-                      router.push(`/admin/panel`);
+                      router.push(ADMIN_ROUTES.PANEL.EVENTS);
                     }}
                   >
                     Cancelar

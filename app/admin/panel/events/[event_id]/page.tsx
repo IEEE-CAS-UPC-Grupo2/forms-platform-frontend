@@ -3,12 +3,13 @@
 import { useRouter } from "next/navigation"; // Importa desde next/navigation en lugar de next/router
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Event } from "../../../models/event";
+import { Event } from "../../../../models/event";
 import { useState, useEffect } from "react";
-import environment from './../../../environments/environments.prod'; // Importa el archivo de configuración
-import { getCookieValue } from '../../../utils/cookies/getCookie';
+import environment from './../../../../environments/environments.prod'; // Importa el archivo de configuración
+import { getCookieValue } from '../../../../utils/cookies/getCookie';
 import {uploadImage} from "@/app/api/images-api"; // Asegúrate de importar correctamente
-import api from '../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import api from '../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import { ADMIN_ROUTES } from "@/app/admin/constants";
 
 export default function Page({
   params,
@@ -328,7 +329,7 @@ export default function Page({
                   <button
                       className="bg-cas-black py-3 px-4 min-w-32 text-[14px] rounded-lg text-cas-white hover:shadow-md hover:opacity-90"
                       onClick={() => {
-                        router.push(`/admin/panel`);
+                        router.push(ADMIN_ROUTES.PANEL.EVENTS);
                       }}
                   >
                     Cancelar

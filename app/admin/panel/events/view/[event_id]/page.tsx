@@ -3,12 +3,12 @@
 import { CustomButton } from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Event } from "../../../../models/event";
+import { Event } from "../../../../../models/event";
 import dayjs from 'dayjs';
-import environment from './../../../../environments/environments.prod'; // Importa el archivo de configuración
-import { getCookieValue } from '../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
-import withAuth from "../../../../withAuth";
-import api from '../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import { getCookieValue } from '../../../../../utils/cookies/getCookie'; // Asegúrate de importar correctamente
+import withAuth from "../../../../../withAuth";
+import api from '../../../../../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import { ADMIN_ROUTES } from "@/app/admin/constants";
 
 function Page({
   params,
@@ -114,7 +114,7 @@ function Page({
           </div>
           <CustomButton color="black"
             onClick={() => {
-              router.push(`/admin/panel`);
+              router.push(ADMIN_ROUTES.PANEL.EVENTS);
             }}
           >
             Regresar

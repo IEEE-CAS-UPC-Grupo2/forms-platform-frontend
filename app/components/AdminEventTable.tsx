@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Event } from "../models/event";
 import environment from '../environments/environments.prod'; // Importa el archivo de configuración
 import api from '../Interceptors/axiosConfig'; // Importa tu instancia de Axios configurada
+import { ADMIN_ROUTES } from "../admin/constants";
 
 interface TablaProps {
   eventos: Event[];
@@ -36,11 +37,11 @@ export function AdminEventTable({ eventos }: TablaProps) {
   };
 
   const handleEdit = (id: number) => {
-    router.push(`/admin/panel/${id}`);
+    router.push(`${ADMIN_ROUTES.PANEL.EVENTS}/${id}`);
   };
 
   const handleView = (id: number) => {
-    router.push(`/admin/panel/view/${id}`);
+    router.push(`${ADMIN_ROUTES.PANEL.EVENTS}/view/${id}`);
   };
 
   return (
@@ -48,7 +49,7 @@ export function AdminEventTable({ eventos }: TablaProps) {
       <div className="flex flex-col md:flex-row justify-between items-center bg-cas-gray-light p-2 rounded-t-lg">
         <h2 className="text-lg font-semibold px-4">Detalles de los Eventos</h2>
         <div className="py-2 px-4">
-          <CustomButton onClick={() => { router.push(`/admin/panel/create`); }}>
+          <CustomButton onClick={() => { router.push(`${ADMIN_ROUTES.PANEL.EVENTS}/create`); }}>
             <span>Crear nuevo evento</span>
           </CustomButton>
         </div>

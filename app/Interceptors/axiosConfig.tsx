@@ -7,8 +7,6 @@ import axios, {
 } from "axios";
 import environment from "../environments/environments.prod";
 
-
-
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
@@ -43,25 +41,29 @@ const getTokenExpirationDate = (token: string): Date | null => {
 };
 
 const setCookie = (name: string, value: string, days: number) => {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    expires = "; expires=" + date.toUTCString();
+  if (typeof document !== "undefined") {
+    let expires = "";
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = `${name}=${
+      encodeURIComponent(value) || ""
+    }${expires}; path=/`;
   }
-  document.cookie = `${name}=${
-    encodeURIComponent(value) || ""
-  }${expires}; path=/`;
 };
 
 const getCookie = (name: string): string | null => {
-  const nameEQ = `${name}=`;
-  const ca = document.cookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) === 0)
-      return decodeURIComponent(c.substring(nameEQ.length, c.length));
+  if (typeof document !== "undefined") {
+    const nameEQ = `${name}=`;
+    const ca = document.cookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0)
+        return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
   }
   return null;
 };
@@ -90,15 +92,13 @@ api.interceptors.request.use(
           const refreshToken = getCookie("refreshToken");
 
           if (refreshToken) {
-           
-
             try {
               const response = await axios.post(
                 `${environment.apiBaseUrl}/Security/ObtainRefreshToken`,
                 {
                   expiredToken: jwt,
                   refreshToken: refreshToken,
-                },
+                }
               );
 
               if (response.status === 200) {
@@ -154,7 +154,7 @@ api.interceptors.request.use(
   (error: AxiosError) => {
     console.error("Request error:", error);
     return Promise.reject(error);
-  },
+  }
 );
 
 api.interceptors.response.use(
@@ -185,7 +185,7 @@ api.interceptors.response.use(
             {
               expiredToken: jwt,
               refreshToken: refreshToken,
-            },
+            }
           );
 
           if (response.status === 200) {
@@ -221,7 +221,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;
